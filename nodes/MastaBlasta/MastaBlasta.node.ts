@@ -232,10 +232,21 @@ export class MastaBlasta implements INodeType {
 						const name = this.getNodeParameter('name', i) as string;
 						const credentials = this.getNodeParameter('credentials', i) as string;
 
+						let parsedCredentials: IDataObject;
+						try {
+							parsedCredentials = JSON.parse(credentials);
+						} catch {
+							throw new NodeOperationError(
+								this.getNode(),
+								'Invalid JSON format for credentials. Please provide valid JSON.',
+								{ itemIndex: i },
+							);
+						}
+
 						const body: IDataObject = {
 							platform,
 							name,
-							credentials: JSON.parse(credentials),
+							credentials: parsedCredentials,
 						};
 
 						const options: IHttpRequestOptions = {
@@ -282,7 +293,15 @@ export class MastaBlasta implements INodeType {
 							body.name = updateFields.name;
 						}
 						if (updateFields.credentials) {
-							body.credentials = JSON.parse(updateFields.credentials as string);
+							try {
+								body.credentials = JSON.parse(updateFields.credentials as string);
+							} catch {
+								throw new NodeOperationError(
+									this.getNode(),
+									'Invalid JSON format for credentials. Please provide valid JSON.',
+									{ itemIndex: i },
+								);
+							}
 						}
 
 						const options: IHttpRequestOptions = {
