@@ -24,6 +24,12 @@ export const analyticsOperations: INodeProperties[] = [
 				description: 'Get analytics overview',
 				action: 'Get analytics overview',
 			},
+			{
+				name: 'Compare',
+				value: 'compare',
+				description: 'Compare analytics between posts',
+				action: 'Compare analytics',
+			},
 		],
 		default: 'getPostAnalytics',
 	},
@@ -94,5 +100,21 @@ export const analyticsFields: INodeProperties[] = [
 				description: 'Filter by platform',
 			},
 		],
+	},
+
+	// Compare operation fields
+	{
+		displayName: 'Post IDs',
+		name: 'postIds',
+		type: 'string',
+		required: true,
+		displayOptions: {
+			show: {
+				resource: ['analytics'],
+				operation: ['compare'],
+			},
+		},
+		default: '',
+		description: 'Comma-separated list of post IDs to compare',
 	},
 ];

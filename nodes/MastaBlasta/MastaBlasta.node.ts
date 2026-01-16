@@ -20,6 +20,16 @@ import { bulkOperations, bulkFields } from './resources/bulk';
 import { webhookOperations, webhookFields } from './resources/webhook';
 import { searchOperations, searchFields } from './resources/search';
 import { urlOperations, urlFields } from './resources/url';
+import { videoOperations, videoFields } from './resources/video';
+import { voiceoverOperations, voiceoverFields } from './resources/voiceover';
+import { socialMonitorOperations, socialMonitorFields } from './resources/socialMonitor';
+import { videoClipOperations, videoClipFields } from './resources/videoClip';
+import { templateOperations, templateFields } from './resources/template';
+import { abTestOperations, abTestFields } from './resources/abTest';
+import { bulkImportOperations, bulkImportFields } from './resources/bulkImport';
+import { chatbotOperations, chatbotFields } from './resources/chatbot';
+import { connectionOperations, connectionFields } from './resources/connection';
+import { retryOperations, retryFields } from './resources/retry';
 
 export class MastaBlasta implements INodeType {
 	description: INodeTypeDescription = {
@@ -103,6 +113,46 @@ export class MastaBlasta implements INodeType {
 						name: 'URL',
 						value: 'url',
 					},
+					{
+						name: 'Video',
+						value: 'video',
+					},
+					{
+						name: 'Voiceover',
+						value: 'voiceover',
+					},
+					{
+						name: 'Social Monitor',
+						value: 'socialMonitor',
+					},
+					{
+						name: 'Video Clip',
+						value: 'videoClip',
+					},
+					{
+						name: 'Template',
+						value: 'template',
+					},
+					{
+						name: 'A/B Test',
+						value: 'abTest',
+					},
+					{
+						name: 'Bulk Import',
+						value: 'bulkImport',
+					},
+					{
+						name: 'Chatbot',
+						value: 'chatbot',
+					},
+					{
+						name: 'Connection',
+						value: 'connection',
+					},
+					{
+						name: 'Retry',
+						value: 'retry',
+					},
 				],
 				default: 'post',
 			},
@@ -130,6 +180,26 @@ export class MastaBlasta implements INodeType {
 			...searchFields,
 			...urlOperations,
 			...urlFields,
+			...videoOperations,
+			...videoFields,
+			...voiceoverOperations,
+			...voiceoverFields,
+			...socialMonitorOperations,
+			...socialMonitorFields,
+			...videoClipOperations,
+			...videoClipFields,
+			...templateOperations,
+			...templateFields,
+			...abTestOperations,
+			...abTestFields,
+			...bulkImportOperations,
+			...bulkImportFields,
+			...chatbotOperations,
+			...chatbotFields,
+			...connectionOperations,
+			...connectionFields,
+			...retryOperations,
+			...retryFields,
 		],
 	};
 
@@ -723,6 +793,69 @@ export class MastaBlasta implements INodeType {
 							'mastaBlasta',
 							options,
 						);
+					} else if (operation === 'predictPerformance') {
+						const content = this.getNodeParameter('content', i) as string;
+
+						const body: IDataObject = {
+							content,
+						};
+
+						const options: IHttpRequestOptions = {
+							method: 'POST',
+							url: `${apiPrefix}/ai/predict-performance`,
+							body,
+						};
+
+						responseData = await this.helpers.httpRequestWithAuthentication.call(
+							this,
+							'mastaBlasta',
+							options,
+						);
+					} else if (operation === 'compareVariations') {
+						const variations = this.getNodeParameter('variations', i) as string;
+
+						const body: IDataObject = {
+							variations: JSON.parse(variations),
+						};
+
+						const options: IHttpRequestOptions = {
+							method: 'POST',
+							url: `${apiPrefix}/ai/compare-variations`,
+							body,
+						};
+
+						responseData = await this.helpers.httpRequestWithAuthentication.call(
+							this,
+							'mastaBlasta',
+							options,
+						);
+					} else if (operation === 'trainModel') {
+						const trainingData = this.getNodeParameter('trainingData', i) as string;
+
+						const body: IDataObject = JSON.parse(trainingData);
+
+						const options: IHttpRequestOptions = {
+							method: 'POST',
+							url: `${apiPrefix}/ai/train-model`,
+							body,
+						};
+
+						responseData = await this.helpers.httpRequestWithAuthentication.call(
+							this,
+							'mastaBlasta',
+							options,
+						);
+					} else if (operation === 'getStatus') {
+						const options: IHttpRequestOptions = {
+							method: 'GET',
+							url: `${apiPrefix}/ai/status`,
+						};
+
+						responseData = await this.helpers.httpRequestWithAuthentication.call(
+							this,
+							'mastaBlasta',
+							options,
+						);
 					}
 				} else if (resource === 'platform') {
 					if (operation === 'getAll') {
@@ -1224,6 +1357,1294 @@ export class MastaBlasta implements INodeType {
 							method: 'GET',
 							url: `${apiPrefix}/analytics/overview`,
 							qs,
+						};
+
+						responseData = await this.helpers.httpRequestWithAuthentication.call(
+							this,
+							'mastaBlasta',
+							options,
+						);
+					} else if (operation === 'compare') {
+						const postIds = this.getNodeParameter('postIds', i) as string;
+
+						const body: IDataObject = {
+							post_ids: postIds.split(',').map((id) => id.trim()),
+						};
+
+						const options: IHttpRequestOptions = {
+							method: 'POST',
+							url: `${apiPrefix}/analytics/compare`,
+							body,
+						};
+
+						responseData = await this.helpers.httpRequestWithAuthentication.call(
+							this,
+							'mastaBlasta',
+							options,
+						);
+					}
+				} else if (resource === 'video') {
+					if (operation === 'generateScript') {
+						const topic = this.getNodeParameter('topic', i) as string;
+						const platform = this.getNodeParameter('platform', i) as string;
+						const additionalFields = this.getNodeParameter('additionalFields', i, {}) as IDataObject;
+
+						const body: IDataObject = {
+							topic,
+							platform,
+						};
+
+						if (additionalFields.duration) {
+							body.duration = additionalFields.duration;
+						}
+						if (additionalFields.style) {
+							body.style = additionalFields.style;
+						}
+
+						const options: IHttpRequestOptions = {
+							method: 'POST',
+							url: `${apiPrefix}/ai/generate-video-script`,
+							body,
+						};
+
+						responseData = await this.helpers.httpRequestWithAuthentication.call(
+							this,
+							'mastaBlasta',
+							options,
+						);
+					} else if (operation === 'createSlideshow') {
+						const imageUrls = this.getNodeParameter('imageUrls', i) as string;
+
+						const body: IDataObject = {
+							image_urls: imageUrls.split(',').map((url) => url.trim()),
+						};
+
+						const options: IHttpRequestOptions = {
+							method: 'POST',
+							url: `${apiPrefix}/ai/create-slideshow`,
+							body,
+						};
+
+						responseData = await this.helpers.httpRequestWithAuthentication.call(
+							this,
+							'mastaBlasta',
+							options,
+						);
+					} else if (operation === 'generatePrompt') {
+						const topic = this.getNodeParameter('topic', i) as string;
+
+						const body: IDataObject = {
+							topic,
+						};
+
+						const options: IHttpRequestOptions = {
+							method: 'POST',
+							url: `${apiPrefix}/video/generate-prompt`,
+							body,
+						};
+
+						responseData = await this.helpers.httpRequestWithAuthentication.call(
+							this,
+							'mastaBlasta',
+							options,
+						);
+					} else if (operation === 'generateCaptions') {
+						const videoUrl = this.getNodeParameter('videoUrl', i) as string;
+
+						const body: IDataObject = {
+							video_url: videoUrl,
+						};
+
+						const options: IHttpRequestOptions = {
+							method: 'POST',
+							url: `${apiPrefix}/video/generate-captions`,
+							body,
+						};
+
+						responseData = await this.helpers.httpRequestWithAuthentication.call(
+							this,
+							'mastaBlasta',
+							options,
+						);
+					} else if (operation === 'optimizeVideo') {
+						const platform = this.getNodeParameter('platform', i) as string;
+
+						const body: IDataObject = {
+							platform,
+						};
+
+						const options: IHttpRequestOptions = {
+							method: 'POST',
+							url: `${apiPrefix}/video/optimize`,
+							body,
+						};
+
+						responseData = await this.helpers.httpRequestWithAuthentication.call(
+							this,
+							'mastaBlasta',
+							options,
+						);
+					} else if (operation === 'getVideoSpecs') {
+						const platform = this.getNodeParameter('platform', i) as string;
+
+						const options: IHttpRequestOptions = {
+							method: 'GET',
+							url: `${apiPrefix}/video/specs/${platform}`,
+						};
+
+						responseData = await this.helpers.httpRequestWithAuthentication.call(
+							this,
+							'mastaBlasta',
+							options,
+						);
+					} else if (operation === 'getTemplates') {
+						const options: IHttpRequestOptions = {
+							method: 'GET',
+							url: `${apiPrefix}/video/templates`,
+						};
+
+						responseData = await this.helpers.httpRequestWithAuthentication.call(
+							this,
+							'mastaBlasta',
+							options,
+						);
+					} else if (operation === 'getTemplate') {
+						const templateId = this.getNodeParameter('templateId', i) as string;
+
+						const options: IHttpRequestOptions = {
+							method: 'GET',
+							url: `${apiPrefix}/video/templates/${templateId}`,
+						};
+
+						responseData = await this.helpers.httpRequestWithAuthentication.call(
+							this,
+							'mastaBlasta',
+							options,
+						);
+					} else if (operation === 'generateFromTemplate') {
+						const templateId = this.getNodeParameter('templateId', i) as string;
+
+						const body: IDataObject = {
+							template_id: templateId,
+						};
+
+						const options: IHttpRequestOptions = {
+							method: 'POST',
+							url: `${apiPrefix}/video/generate-from-template`,
+							body,
+						};
+
+						responseData = await this.helpers.httpRequestWithAuthentication.call(
+							this,
+							'mastaBlasta',
+							options,
+						);
+					} else if (operation === 'renderSlideshow') {
+						const imageUrls = this.getNodeParameter('imageUrls', i) as string;
+
+						const body: IDataObject = {
+							image_urls: imageUrls.split(',').map((url) => url.trim()),
+						};
+
+						const options: IHttpRequestOptions = {
+							method: 'POST',
+							url: `${apiPrefix}/video/render-slideshow`,
+							body,
+						};
+
+						responseData = await this.helpers.httpRequestWithAuthentication.call(
+							this,
+							'mastaBlasta',
+							options,
+						);
+					} else if (operation === 'generateSubtitles') {
+						const videoUrl = this.getNodeParameter('videoUrl', i) as string;
+
+						const body: IDataObject = {
+							video_url: videoUrl,
+						};
+
+						const options: IHttpRequestOptions = {
+							method: 'POST',
+							url: `${apiPrefix}/video/generate-subtitles`,
+							body,
+						};
+
+						responseData = await this.helpers.httpRequestWithAuthentication.call(
+							this,
+							'mastaBlasta',
+							options,
+						);
+					} else if (operation === 'convertAspectRatio') {
+						const videoUrl = this.getNodeParameter('videoUrl', i) as string;
+
+						const body: IDataObject = {
+							video_url: videoUrl,
+						};
+
+						const options: IHttpRequestOptions = {
+							method: 'POST',
+							url: `${apiPrefix}/video/convert-aspect-ratio`,
+							body,
+						};
+
+						responseData = await this.helpers.httpRequestWithAuthentication.call(
+							this,
+							'mastaBlasta',
+							options,
+						);
+					} else if (operation === 'generateVoiceoverScript') {
+						const topic = this.getNodeParameter('topic', i) as string;
+
+						const body: IDataObject = {
+							topic,
+						};
+
+						const options: IHttpRequestOptions = {
+							method: 'POST',
+							url: `${apiPrefix}/video/generate-voiceover-script`,
+							body,
+						};
+
+						responseData = await this.helpers.httpRequestWithAuthentication.call(
+							this,
+							'mastaBlasta',
+							options,
+						);
+					} else if (operation === 'suggestBRoll') {
+						const body: IDataObject = {};
+
+						const options: IHttpRequestOptions = {
+							method: 'POST',
+							url: `${apiPrefix}/video/suggest-b-roll`,
+							body,
+						};
+
+						responseData = await this.helpers.httpRequestWithAuthentication.call(
+							this,
+							'mastaBlasta',
+							options,
+						);
+					} else if (operation === 'batchCreate') {
+						const body: IDataObject = {};
+
+						const options: IHttpRequestOptions = {
+							method: 'POST',
+							url: `${apiPrefix}/video/batch-create`,
+							body,
+						};
+
+						responseData = await this.helpers.httpRequestWithAuthentication.call(
+							this,
+							'mastaBlasta',
+							options,
+						);
+					} else if (operation === 'addWatermark') {
+						const videoUrl = this.getNodeParameter('videoUrl', i) as string;
+
+						const body: IDataObject = {
+							video_url: videoUrl,
+						};
+
+						const options: IHttpRequestOptions = {
+							method: 'POST',
+							url: `${apiPrefix}/video/add-watermark`,
+							body,
+						};
+
+						responseData = await this.helpers.httpRequestWithAuthentication.call(
+							this,
+							'mastaBlasta',
+							options,
+						);
+					} else if (operation === 'generateIntroOutro') {
+						const body: IDataObject = {};
+
+						const options: IHttpRequestOptions = {
+							method: 'POST',
+							url: `${apiPrefix}/video/generate-intro-outro`,
+							body,
+						};
+
+						responseData = await this.helpers.httpRequestWithAuthentication.call(
+							this,
+							'mastaBlasta',
+							options,
+						);
+					} else if (operation === 'addTextOverlays') {
+						const videoUrl = this.getNodeParameter('videoUrl', i) as string;
+
+						const body: IDataObject = {
+							video_url: videoUrl,
+						};
+
+						const options: IHttpRequestOptions = {
+							method: 'POST',
+							url: `${apiPrefix}/video/add-text-overlays`,
+							body,
+						};
+
+						responseData = await this.helpers.httpRequestWithAuthentication.call(
+							this,
+							'mastaBlasta',
+							options,
+						);
+					} else if (operation === 'multiPlatformExport') {
+						const platform = this.getNodeParameter('platform', i) as string;
+
+						const body: IDataObject = {
+							platform,
+						};
+
+						const options: IHttpRequestOptions = {
+							method: 'POST',
+							url: `${apiPrefix}/video/multi-platform-export`,
+							body,
+						};
+
+						responseData = await this.helpers.httpRequestWithAuthentication.call(
+							this,
+							'mastaBlasta',
+							options,
+						);
+					} else if (operation === 'getAnalyticsMetadata') {
+						const options: IHttpRequestOptions = {
+							method: 'GET',
+							url: `${apiPrefix}/video/analytics-metadata`,
+						};
+
+						responseData = await this.helpers.httpRequestWithAuthentication.call(
+							this,
+							'mastaBlasta',
+							options,
+						);
+					} else if (operation === 'generateThumbnail') {
+						const body: IDataObject = {};
+
+						const options: IHttpRequestOptions = {
+							method: 'POST',
+							url: `${apiPrefix}/video/generate-thumbnail`,
+							body,
+						};
+
+						responseData = await this.helpers.httpRequestWithAuthentication.call(
+							this,
+							'mastaBlasta',
+							options,
+						);
+					} else if (operation === 'generateVideoImages') {
+						const body: IDataObject = {};
+
+						const options: IHttpRequestOptions = {
+							method: 'POST',
+							url: `${apiPrefix}/video/generate-images`,
+							body,
+						};
+
+						responseData = await this.helpers.httpRequestWithAuthentication.call(
+							this,
+							'mastaBlasta',
+							options,
+						);
+					} else if (operation === 'createImageVariations') {
+						const body: IDataObject = {};
+
+						const options: IHttpRequestOptions = {
+							method: 'POST',
+							url: `${apiPrefix}/video/create-image-variations`,
+							body,
+						};
+
+						responseData = await this.helpers.httpRequestWithAuthentication.call(
+							this,
+							'mastaBlasta',
+							options,
+						);
+					}
+				} else if (resource === 'voiceover') {
+					if (operation === 'getSupportedLanguages') {
+						const options: IHttpRequestOptions = {
+							method: 'GET',
+							url: `${apiPrefix}/voiceover/supported-languages`,
+						};
+
+						responseData = await this.helpers.httpRequestWithAuthentication.call(
+							this,
+							'mastaBlasta',
+							options,
+						);
+					} else if (operation === 'generatePronunciationGuide') {
+						const script = this.getNodeParameter('script', i) as string;
+						const language = this.getNodeParameter('language', i) as string;
+
+						const body: IDataObject = {
+							script,
+							language,
+						};
+
+						const options: IHttpRequestOptions = {
+							method: 'POST',
+							url: `${apiPrefix}/voiceover/pronunciation-guide`,
+							body,
+						};
+
+						responseData = await this.helpers.httpRequestWithAuthentication.call(
+							this,
+							'mastaBlasta',
+							options,
+						);
+					} else if (operation === 'addEmotionMarkers') {
+						const script = this.getNodeParameter('script', i) as string;
+						const additionalFields = this.getNodeParameter('additionalFields', i, {}) as IDataObject;
+
+						const body: IDataObject = {
+							script,
+						};
+
+						if (additionalFields.emotion) {
+							body.emotion = additionalFields.emotion;
+						}
+
+						const options: IHttpRequestOptions = {
+							method: 'POST',
+							url: `${apiPrefix}/voiceover/add-emotion-markers`,
+							body,
+						};
+
+						responseData = await this.helpers.httpRequestWithAuthentication.call(
+							this,
+							'mastaBlasta',
+							options,
+						);
+					} else if (operation === 'generateMultiVoiceScript') {
+						const script = this.getNodeParameter('script', i) as string;
+						const additionalFields = this.getNodeParameter('additionalFields', i, {}) as IDataObject;
+
+						const body: IDataObject = {
+							script,
+						};
+
+						if (additionalFields.voiceCount) {
+							body.voice_count = additionalFields.voiceCount;
+						}
+
+						const options: IHttpRequestOptions = {
+							method: 'POST',
+							url: `${apiPrefix}/voiceover/multi-voice-script`,
+							body,
+						};
+
+						responseData = await this.helpers.httpRequestWithAuthentication.call(
+							this,
+							'mastaBlasta',
+							options,
+						);
+					} else if (operation === 'addBreathMarks') {
+						const script = this.getNodeParameter('script', i) as string;
+
+						const body: IDataObject = {
+							script,
+						};
+
+						const options: IHttpRequestOptions = {
+							method: 'POST',
+							url: `${apiPrefix}/voiceover/add-breath-marks`,
+							body,
+						};
+
+						responseData = await this.helpers.httpRequestWithAuthentication.call(
+							this,
+							'mastaBlasta',
+							options,
+						);
+					} else if (operation === 'estimateDuration') {
+						const script = this.getNodeParameter('script', i) as string;
+						const language = this.getNodeParameter('language', i) as string;
+
+						const body: IDataObject = {
+							script,
+							language,
+						};
+
+						const options: IHttpRequestOptions = {
+							method: 'POST',
+							url: `${apiPrefix}/voiceover/estimate-duration`,
+							body,
+						};
+
+						responseData = await this.helpers.httpRequestWithAuthentication.call(
+							this,
+							'mastaBlasta',
+							options,
+						);
+					} else if (operation === 'addAccentGuidance') {
+						const script = this.getNodeParameter('script', i) as string;
+						const additionalFields = this.getNodeParameter('additionalFields', i, {}) as IDataObject;
+
+						const body: IDataObject = {
+							script,
+						};
+
+						if (additionalFields.accent) {
+							body.accent = additionalFields.accent;
+						}
+
+						const options: IHttpRequestOptions = {
+							method: 'POST',
+							url: `${apiPrefix}/voiceover/add-accent-guidance`,
+							body,
+						};
+
+						responseData = await this.helpers.httpRequestWithAuthentication.call(
+							this,
+							'mastaBlasta',
+							options,
+						);
+					} else if (operation === 'configureTTS') {
+						const body: IDataObject = {};
+
+						const options: IHttpRequestOptions = {
+							method: 'POST',
+							url: `${apiPrefix}/voiceover/configure-tts`,
+							body,
+						};
+
+						responseData = await this.helpers.httpRequestWithAuthentication.call(
+							this,
+							'mastaBlasta',
+							options,
+						);
+					} else if (operation === 'syncMusic') {
+						const body: IDataObject = {};
+
+						const options: IHttpRequestOptions = {
+							method: 'POST',
+							url: `${apiPrefix}/voiceover/sync-music`,
+							body,
+						};
+
+						responseData = await this.helpers.httpRequestWithAuthentication.call(
+							this,
+							'mastaBlasta',
+							options,
+						);
+					} else if (operation === 'qualityCheck') {
+						const script = this.getNodeParameter('script', i) as string;
+
+						const body: IDataObject = {
+							script,
+						};
+
+						const options: IHttpRequestOptions = {
+							method: 'POST',
+							url: `${apiPrefix}/voiceover/quality-check`,
+							body,
+						};
+
+						responseData = await this.helpers.httpRequestWithAuthentication.call(
+							this,
+							'mastaBlasta',
+							options,
+						);
+					}
+				} else if (resource === 'socialMonitor') {
+					if (operation === 'create') {
+						const keywords = this.getNodeParameter('keywords', i) as string;
+						const platforms = this.getNodeParameter('platforms', i) as string[];
+
+						const body: IDataObject = {
+							keywords: keywords.split(',').map((k) => k.trim()),
+							platforms,
+						};
+
+						const options: IHttpRequestOptions = {
+							method: 'POST',
+							url: `${apiPrefix}/social-monitors`,
+							body,
+						};
+
+						responseData = await this.helpers.httpRequestWithAuthentication.call(
+							this,
+							'mastaBlasta',
+							options,
+						);
+					} else if (operation === 'getAll') {
+						const options: IHttpRequestOptions = {
+							method: 'GET',
+							url: `${apiPrefix}/social-monitors`,
+						};
+
+						responseData = await this.helpers.httpRequestWithAuthentication.call(
+							this,
+							'mastaBlasta',
+							options,
+						);
+					} else if (operation === 'update') {
+						const monitorId = this.getNodeParameter('monitorId', i) as string;
+						const platforms = this.getNodeParameter('platforms', i) as string[];
+
+						const body: IDataObject = {
+							platforms,
+						};
+
+						const options: IHttpRequestOptions = {
+							method: 'PUT',
+							url: `${apiPrefix}/social-monitors/${monitorId}`,
+							body,
+						};
+
+						responseData = await this.helpers.httpRequestWithAuthentication.call(
+							this,
+							'mastaBlasta',
+							options,
+						);
+					} else if (operation === 'delete') {
+						const monitorId = this.getNodeParameter('monitorId', i) as string;
+
+						const options: IHttpRequestOptions = {
+							method: 'DELETE',
+							url: `${apiPrefix}/social-monitors/${monitorId}`,
+						};
+
+						responseData = await this.helpers.httpRequestWithAuthentication.call(
+							this,
+							'mastaBlasta',
+							options,
+						);
+					} else if (operation === 'getResults') {
+						const monitorId = this.getNodeParameter('monitorId', i) as string;
+
+						const options: IHttpRequestOptions = {
+							method: 'GET',
+							url: `${apiPrefix}/social-monitors/${monitorId}/results`,
+						};
+
+						responseData = await this.helpers.httpRequestWithAuthentication.call(
+							this,
+							'mastaBlasta',
+							options,
+						);
+					} else if (operation === 'refresh') {
+						const monitorId = this.getNodeParameter('monitorId', i) as string;
+
+						const options: IHttpRequestOptions = {
+							method: 'POST',
+							url: `${apiPrefix}/social-monitors/${monitorId}/refresh`,
+							body: {},
+						};
+
+						responseData = await this.helpers.httpRequestWithAuthentication.call(
+							this,
+							'mastaBlasta',
+							options,
+						);
+					}
+				} else if (resource === 'videoClip') {
+					if (operation === 'getStatus') {
+						const options: IHttpRequestOptions = {
+							method: 'GET',
+							url: `${apiPrefix}/clips/status`,
+						};
+
+						responseData = await this.helpers.httpRequestWithAuthentication.call(
+							this,
+							'mastaBlasta',
+							options,
+						);
+					} else if (operation === 'analyze') {
+						const videoUrl = this.getNodeParameter('videoUrl', i) as string;
+						const additionalFields = this.getNodeParameter('additionalFields', i, {}) as IDataObject;
+
+						const body: IDataObject = {
+							video_url: videoUrl,
+						};
+
+						if (additionalFields.clipCount) {
+							body.clip_count = additionalFields.clipCount;
+						}
+						if (additionalFields.minDuration) {
+							body.min_duration = additionalFields.minDuration;
+						}
+
+						const options: IHttpRequestOptions = {
+							method: 'POST',
+							url: `${apiPrefix}/clips/analyze`,
+							body,
+						};
+
+						responseData = await this.helpers.httpRequestWithAuthentication.call(
+							this,
+							'mastaBlasta',
+							options,
+						);
+					} else if (operation === 'getVideoInfo') {
+						const videoUrl = this.getNodeParameter('videoUrl', i) as string;
+
+						const body: IDataObject = {
+							video_url: videoUrl,
+						};
+
+						const options: IHttpRequestOptions = {
+							method: 'POST',
+							url: `${apiPrefix}/clips/video-info`,
+							body,
+						};
+
+						responseData = await this.helpers.httpRequestWithAuthentication.call(
+							this,
+							'mastaBlasta',
+							options,
+						);
+					} else if (operation === 'getMetadata') {
+						const videoUrl = this.getNodeParameter('videoUrl', i) as string;
+
+						const body: IDataObject = {
+							video_url: videoUrl,
+						};
+
+						const options: IHttpRequestOptions = {
+							method: 'POST',
+							url: `${apiPrefix}/clips/metadata`,
+							body,
+						};
+
+						responseData = await this.helpers.httpRequestWithAuthentication.call(
+							this,
+							'mastaBlasta',
+							options,
+						);
+					} else if (operation === 'getDownloadInfo') {
+						const videoUrl = this.getNodeParameter('videoUrl', i) as string;
+
+						const body: IDataObject = {
+							video_url: videoUrl,
+						};
+
+						const options: IHttpRequestOptions = {
+							method: 'POST',
+							url: `${apiPrefix}/clips/download-info`,
+							body,
+						};
+
+						responseData = await this.helpers.httpRequestWithAuthentication.call(
+							this,
+							'mastaBlasta',
+							options,
+						);
+					} else if (operation === 'schedule') {
+						const body: IDataObject = {};
+
+						const options: IHttpRequestOptions = {
+							method: 'POST',
+							url: `${apiPrefix}/clips/schedule`,
+							body,
+						};
+
+						responseData = await this.helpers.httpRequestWithAuthentication.call(
+							this,
+							'mastaBlasta',
+							options,
+						);
+					}
+				} else if (resource === 'template') {
+					if (operation === 'create') {
+						const name = this.getNodeParameter('name', i) as string;
+						const content = this.getNodeParameter('content', i) as string;
+
+						const body: IDataObject = {
+							name,
+							content,
+						};
+
+						const options: IHttpRequestOptions = {
+							method: 'POST',
+							url: `${apiPrefix}/templates`,
+							body,
+						};
+
+						responseData = await this.helpers.httpRequestWithAuthentication.call(
+							this,
+							'mastaBlasta',
+							options,
+						);
+					} else if (operation === 'get') {
+						const templateId = this.getNodeParameter('templateId', i) as string;
+
+						const options: IHttpRequestOptions = {
+							method: 'GET',
+							url: `${apiPrefix}/templates/${templateId}`,
+						};
+
+						responseData = await this.helpers.httpRequestWithAuthentication.call(
+							this,
+							'mastaBlasta',
+							options,
+						);
+					} else if (operation === 'getAll') {
+						const options: IHttpRequestOptions = {
+							method: 'GET',
+							url: `${apiPrefix}/templates`,
+						};
+
+						responseData = await this.helpers.httpRequestWithAuthentication.call(
+							this,
+							'mastaBlasta',
+							options,
+						);
+					} else if (operation === 'delete') {
+						const templateId = this.getNodeParameter('templateId', i) as string;
+
+						const options: IHttpRequestOptions = {
+							method: 'DELETE',
+							url: `${apiPrefix}/templates/${templateId}`,
+						};
+
+						responseData = await this.helpers.httpRequestWithAuthentication.call(
+							this,
+							'mastaBlasta',
+							options,
+						);
+					}
+				} else if (resource === 'abTest') {
+					if (operation === 'createVersions') {
+						const versions = this.getNodeParameter('versions', i) as string;
+
+						const body: IDataObject = {
+							versions: JSON.parse(versions),
+						};
+
+						const options: IHttpRequestOptions = {
+							method: 'POST',
+							url: `${apiPrefix}/post-versions`,
+							body,
+						};
+
+						responseData = await this.helpers.httpRequestWithAuthentication.call(
+							this,
+							'mastaBlasta',
+							options,
+						);
+					} else if (operation === 'getVersions') {
+						const postId = this.getNodeParameter('postId', i) as string;
+
+						const options: IHttpRequestOptions = {
+							method: 'GET',
+							url: `${apiPrefix}/post-versions/${postId}`,
+						};
+
+						responseData = await this.helpers.httpRequestWithAuthentication.call(
+							this,
+							'mastaBlasta',
+							options,
+						);
+					} else if (operation === 'publishVersion') {
+						const versionId = this.getNodeParameter('versionId', i) as string;
+
+						const options: IHttpRequestOptions = {
+							method: 'POST',
+							url: `${apiPrefix}/post-versions/${versionId}/publish`,
+							body: {},
+						};
+
+						responseData = await this.helpers.httpRequestWithAuthentication.call(
+							this,
+							'mastaBlasta',
+							options,
+						);
+					} else if (operation === 'setWinner') {
+						const versionId = this.getNodeParameter('versionId', i) as string;
+
+						const options: IHttpRequestOptions = {
+							method: 'POST',
+							url: `${apiPrefix}/ab-tests/${versionId}/winner`,
+							body: {},
+						};
+
+						responseData = await this.helpers.httpRequestWithAuthentication.call(
+							this,
+							'mastaBlasta',
+							options,
+						);
+					} else if (operation === 'compare') {
+						const versions = this.getNodeParameter('versions', i) as string;
+
+						const body: IDataObject = {
+							versions: JSON.parse(versions),
+						};
+
+						const options: IHttpRequestOptions = {
+							method: 'POST',
+							url: `${apiPrefix}/ab-tests/compare`,
+							body,
+						};
+
+						responseData = await this.helpers.httpRequestWithAuthentication.call(
+							this,
+							'mastaBlasta',
+							options,
+						);
+					}
+				} else if (resource === 'bulkImport') {
+					if (operation === 'validate') {
+						const data = this.getNodeParameter('data', i) as string;
+
+						const body: IDataObject = {
+							data: JSON.parse(data),
+						};
+
+						const options: IHttpRequestOptions = {
+							method: 'POST',
+							url: `${apiPrefix}/bulk-import/validate`,
+							body,
+						};
+
+						responseData = await this.helpers.httpRequestWithAuthentication.call(
+							this,
+							'mastaBlasta',
+							options,
+						);
+					} else if (operation === 'execute') {
+						const data = this.getNodeParameter('data', i) as string;
+
+						const body: IDataObject = {
+							data: JSON.parse(data),
+						};
+
+						const options: IHttpRequestOptions = {
+							method: 'POST',
+							url: `${apiPrefix}/bulk-import/execute`,
+							body,
+						};
+
+						responseData = await this.helpers.httpRequestWithAuthentication.call(
+							this,
+							'mastaBlasta',
+							options,
+						);
+					} else if (operation === 'get') {
+						const importId = this.getNodeParameter('importId', i) as string;
+
+						const options: IHttpRequestOptions = {
+							method: 'GET',
+							url: `${apiPrefix}/bulk-import/${importId}`,
+						};
+
+						responseData = await this.helpers.httpRequestWithAuthentication.call(
+							this,
+							'mastaBlasta',
+							options,
+						);
+					} else if (operation === 'getAll') {
+						const options: IHttpRequestOptions = {
+							method: 'GET',
+							url: `${apiPrefix}/bulk-import`,
+						};
+
+						responseData = await this.helpers.httpRequestWithAuthentication.call(
+							this,
+							'mastaBlasta',
+							options,
+						);
+					}
+				} else if (resource === 'chatbot') {
+					if (operation === 'createTemplate') {
+						const name = this.getNodeParameter('name', i) as string;
+						const response = this.getNodeParameter('response', i) as string;
+
+						const body: IDataObject = {
+							name,
+							response,
+						};
+
+						const options: IHttpRequestOptions = {
+							method: 'POST',
+							url: `${apiPrefix}/response-templates`,
+							body,
+						};
+
+						responseData = await this.helpers.httpRequestWithAuthentication.call(
+							this,
+							'mastaBlasta',
+							options,
+						);
+					} else if (operation === 'getTemplates') {
+						const options: IHttpRequestOptions = {
+							method: 'GET',
+							url: `${apiPrefix}/response-templates`,
+						};
+
+						responseData = await this.helpers.httpRequestWithAuthentication.call(
+							this,
+							'mastaBlasta',
+							options,
+						);
+					} else if (operation === 'getTemplate') {
+						const templateId = this.getNodeParameter('templateId', i) as string;
+
+						const options: IHttpRequestOptions = {
+							method: 'GET',
+							url: `${apiPrefix}/response-templates/${templateId}`,
+						};
+
+						responseData = await this.helpers.httpRequestWithAuthentication.call(
+							this,
+							'mastaBlasta',
+							options,
+						);
+					} else if (operation === 'updateTemplate') {
+						const templateId = this.getNodeParameter('templateId', i) as string;
+
+						const body: IDataObject = {};
+
+						const options: IHttpRequestOptions = {
+							method: 'PUT',
+							url: `${apiPrefix}/response-templates/${templateId}`,
+							body,
+						};
+
+						responseData = await this.helpers.httpRequestWithAuthentication.call(
+							this,
+							'mastaBlasta',
+							options,
+						);
+					} else if (operation === 'deleteTemplate') {
+						const templateId = this.getNodeParameter('templateId', i) as string;
+
+						const options: IHttpRequestOptions = {
+							method: 'DELETE',
+							url: `${apiPrefix}/response-templates/${templateId}`,
+						};
+
+						responseData = await this.helpers.httpRequestWithAuthentication.call(
+							this,
+							'mastaBlasta',
+							options,
+						);
+					} else if (operation === 'suggestResponse') {
+						const message = this.getNodeParameter('message', i) as string;
+
+						const body: IDataObject = {
+							message,
+						};
+
+						const options: IHttpRequestOptions = {
+							method: 'POST',
+							url: `${apiPrefix}/chatbot/suggest-response`,
+							body,
+						};
+
+						responseData = await this.helpers.httpRequestWithAuthentication.call(
+							this,
+							'mastaBlasta',
+							options,
+						);
+					} else if (operation === 'getInteractions') {
+						const options: IHttpRequestOptions = {
+							method: 'GET',
+							url: `${apiPrefix}/chatbot/interactions`,
+						};
+
+						responseData = await this.helpers.httpRequestWithAuthentication.call(
+							this,
+							'mastaBlasta',
+							options,
+						);
+					} else if (operation === 'createInteraction') {
+						const message = this.getNodeParameter('message', i) as string;
+
+						const body: IDataObject = {
+							message,
+						};
+
+						const options: IHttpRequestOptions = {
+							method: 'POST',
+							url: `${apiPrefix}/chatbot/interactions`,
+							body,
+						};
+
+						responseData = await this.helpers.httpRequestWithAuthentication.call(
+							this,
+							'mastaBlasta',
+							options,
+						);
+					} else if (operation === 'getStats') {
+						const options: IHttpRequestOptions = {
+							method: 'GET',
+							url: `${apiPrefix}/chatbot/stats`,
+						};
+
+						responseData = await this.helpers.httpRequestWithAuthentication.call(
+							this,
+							'mastaBlasta',
+							options,
+						);
+					}
+				} else if (resource === 'connection') {
+					if (operation === 'checkHealth') {
+						const accountId = this.getNodeParameter('accountId', i) as string;
+
+						const options: IHttpRequestOptions = {
+							method: 'GET',
+							url: `${apiPrefix}/connection/health/${accountId}`,
+						};
+
+						responseData = await this.helpers.httpRequestWithAuthentication.call(
+							this,
+							'mastaBlasta',
+							options,
+						);
+					} else if (operation === 'getReconnectInstructions') {
+						const platform = this.getNodeParameter('platform', i) as string;
+
+						const options: IHttpRequestOptions = {
+							method: 'GET',
+							url: `${apiPrefix}/connection/reconnect-instructions/${platform}`,
+						};
+
+						responseData = await this.helpers.httpRequestWithAuthentication.call(
+							this,
+							'mastaBlasta',
+							options,
+						);
+					} else if (operation === 'validate') {
+						const accountId = this.getNodeParameter('accountId', i) as string;
+
+						const options: IHttpRequestOptions = {
+							method: 'POST',
+							url: `${apiPrefix}/connection/validate/${accountId}`,
+							body: {},
+						};
+
+						responseData = await this.helpers.httpRequestWithAuthentication.call(
+							this,
+							'mastaBlasta',
+							options,
+						);
+					} else if (operation === 'checkPermissions') {
+						const accountId = this.getNodeParameter('accountId', i) as string;
+
+						const options: IHttpRequestOptions = {
+							method: 'GET',
+							url: `${apiPrefix}/connection/permissions/${accountId}`,
+						};
+
+						responseData = await this.helpers.httpRequestWithAuthentication.call(
+							this,
+							'mastaBlasta',
+							options,
+						);
+					} else if (operation === 'getQuickConnectOptions') {
+						const options: IHttpRequestOptions = {
+							method: 'GET',
+							url: `${apiPrefix}/connection/quick-connect-options`,
+						};
+
+						responseData = await this.helpers.httpRequestWithAuthentication.call(
+							this,
+							'mastaBlasta',
+							options,
+						);
+					} else if (operation === 'quickConnect') {
+						const platform = this.getNodeParameter('platform', i) as string;
+
+						const body: IDataObject = {
+							platform,
+						};
+
+						const options: IHttpRequestOptions = {
+							method: 'POST',
+							url: `${apiPrefix}/connection/quick-connect`,
+							body,
+						};
+
+						responseData = await this.helpers.httpRequestWithAuthentication.call(
+							this,
+							'mastaBlasta',
+							options,
+						);
+					} else if (operation === 'troubleshoot') {
+						const errorDetails = this.getNodeParameter('errorDetails', i, '{}') as string;
+
+						const body: IDataObject = JSON.parse(errorDetails);
+
+						const options: IHttpRequestOptions = {
+							method: 'POST',
+							url: `${apiPrefix}/connection/troubleshoot`,
+							body,
+						};
+
+						responseData = await this.helpers.httpRequestWithAuthentication.call(
+							this,
+							'mastaBlasta',
+							options,
+						);
+					} else if (operation === 'testPrerequisites') {
+						const platform = this.getNodeParameter('platform', i) as string;
+
+						const body: IDataObject = {
+							platform,
+						};
+
+						const options: IHttpRequestOptions = {
+							method: 'POST',
+							url: `${apiPrefix}/connection/test-prerequisites`,
+							body,
+						};
+
+						responseData = await this.helpers.httpRequestWithAuthentication.call(
+							this,
+							'mastaBlasta',
+							options,
+						);
+					} else if (operation === 'prepareBulkConnect') {
+						const body: IDataObject = {};
+
+						const options: IHttpRequestOptions = {
+							method: 'POST',
+							url: `${apiPrefix}/connection/prepare-bulk-connect`,
+							body,
+						};
+
+						responseData = await this.helpers.httpRequestWithAuthentication.call(
+							this,
+							'mastaBlasta',
+							options,
+						);
+					} else if (operation === 'autoRefresh') {
+						const accountId = this.getNodeParameter('accountId', i) as string;
+
+						const options: IHttpRequestOptions = {
+							method: 'POST',
+							url: `${apiPrefix}/connection/auto-refresh/${accountId}`,
+							body: {},
+						};
+
+						responseData = await this.helpers.httpRequestWithAuthentication.call(
+							this,
+							'mastaBlasta',
+							options,
+						);
+					}
+				} else if (resource === 'retry') {
+					if (operation === 'retryFailedPosts') {
+						const options: IHttpRequestOptions = {
+							method: 'POST',
+							url: `${apiPrefix}/posts/retry-failed`,
+							body: {},
+						};
+
+						responseData = await this.helpers.httpRequestWithAuthentication.call(
+							this,
+							'mastaBlasta',
+							options,
+						);
+					} else if (operation === 'retryPost') {
+						const postId = this.getNodeParameter('postId', i) as string;
+
+						const options: IHttpRequestOptions = {
+							method: 'POST',
+							url: `${apiPrefix}/posts/${postId}/retry`,
+							body: {},
 						};
 
 						responseData = await this.helpers.httpRequestWithAuthentication.call(

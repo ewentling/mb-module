@@ -78,6 +78,30 @@ export const aiOperations: INodeProperties[] = [
 				description: 'Generate image using DALL-E',
 				action: 'Generate image',
 			},
+			{
+				name: 'Predict Performance',
+				value: 'predictPerformance',
+				description: 'Predict post performance',
+				action: 'Predict performance',
+			},
+			{
+				name: 'Compare Variations',
+				value: 'compareVariations',
+				description: 'Compare content variations',
+				action: 'Compare variations',
+			},
+			{
+				name: 'Train Model',
+				value: 'trainModel',
+				description: 'Train custom AI model',
+				action: 'Train model',
+			},
+			{
+				name: 'Get Status',
+				value: 'getStatus',
+				description: 'Get AI service status',
+				action: 'Get status',
+			},
 		],
 		default: 'generateCaption',
 	},
@@ -344,5 +368,56 @@ export const aiFields: INodeProperties[] = [
 				description: 'Target platform for sizing',
 			},
 		],
+	},
+
+	// Predict Performance fields
+	{
+		displayName: 'Content',
+		name: 'content',
+		type: 'string',
+		typeOptions: {
+			rows: 3,
+		},
+		required: true,
+		displayOptions: {
+			show: {
+				resource: ['ai'],
+				operation: ['predictPerformance'],
+			},
+		},
+		default: '',
+		description: 'Content to analyze',
+	},
+
+	// Compare Variations fields
+	{
+		displayName: 'Variations',
+		name: 'variations',
+		type: 'json',
+		required: true,
+		displayOptions: {
+			show: {
+				resource: ['ai'],
+				operation: ['compareVariations'],
+			},
+		},
+		default: '[]',
+		description: 'Array of content variations to compare',
+	},
+
+	// Train Model fields
+	{
+		displayName: 'Training Data',
+		name: 'trainingData',
+		type: 'json',
+		required: true,
+		displayOptions: {
+			show: {
+				resource: ['ai'],
+				operation: ['trainModel'],
+			},
+		},
+		default: '{}',
+		description: 'Training data for the AI model',
 	},
 ];
