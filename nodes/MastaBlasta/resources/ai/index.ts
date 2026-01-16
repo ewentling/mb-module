@@ -42,6 +42,42 @@ export const aiOperations: INodeProperties[] = [
 				description: 'Get best posting times',
 				action: 'Get best times',
 			},
+			{
+				name: 'Translate Content',
+				value: 'translateContent',
+				description: 'Translate content to different languages',
+				action: 'Translate content',
+			},
+			{
+				name: 'Posting Frequency',
+				value: 'postingFrequency',
+				description: 'Get optimal posting frequency',
+				action: 'Get posting frequency',
+			},
+			{
+				name: 'Optimize Image',
+				value: 'optimizeImage',
+				description: 'Optimize image for social media',
+				action: 'Optimize image',
+			},
+			{
+				name: 'Enhance Image',
+				value: 'enhanceImage',
+				description: 'AI enhance image quality',
+				action: 'Enhance image',
+			},
+			{
+				name: 'Generate Alt Text',
+				value: 'generateAltText',
+				description: 'Generate alt text for images',
+				action: 'Generate alt text',
+			},
+			{
+				name: 'Generate Image',
+				value: 'generateImage',
+				description: 'Generate image using DALL-E',
+				action: 'Generate image',
+			},
 		],
 		default: 'generateCaption',
 	},
@@ -169,5 +205,144 @@ export const aiFields: INodeProperties[] = [
 		},
 		default: '',
 		description: 'The account ID to analyze',
+	},
+
+	// Translate Content fields
+	{
+		displayName: 'Target Language',
+		name: 'targetLanguage',
+		type: 'string',
+		required: true,
+		displayOptions: {
+			show: {
+				resource: ['ai'],
+				operation: ['translateContent'],
+			},
+		},
+		default: 'es',
+		description: 'Target language code (e.g., es, fr, de, ja)',
+		placeholder: 'es',
+	},
+
+	// Posting Frequency fields
+	{
+		displayName: 'Platform',
+		name: 'platform',
+		type: 'options',
+		required: true,
+		displayOptions: {
+			show: {
+				resource: ['ai'],
+				operation: ['postingFrequency'],
+			},
+		},
+		options: [
+			{ name: 'Twitter', value: 'twitter' },
+			{ name: 'Facebook', value: 'facebook' },
+			{ name: 'Instagram', value: 'instagram' },
+			{ name: 'LinkedIn', value: 'linkedin' },
+			{ name: 'TikTok', value: 'tiktok' },
+		],
+		default: 'twitter',
+		description: 'The target platform',
+	},
+
+	// Optimize/Enhance/Generate Alt Text - Image operations
+	{
+		displayName: 'Image URL',
+		name: 'imageUrl',
+		type: 'string',
+		required: true,
+		displayOptions: {
+			show: {
+				resource: ['ai'],
+				operation: ['optimizeImage', 'enhanceImage', 'generateAltText'],
+			},
+		},
+		default: '',
+		description: 'URL of the image to process',
+		placeholder: 'https://example.com/image.jpg',
+	},
+	{
+		displayName: 'Platform',
+		name: 'platform',
+		type: 'options',
+		displayOptions: {
+			show: {
+				resource: ['ai'],
+				operation: ['optimizeImage'],
+			},
+		},
+		options: [
+			{ name: 'Twitter', value: 'twitter' },
+			{ name: 'Facebook', value: 'facebook' },
+			{ name: 'Instagram', value: 'instagram' },
+			{ name: 'LinkedIn', value: 'linkedin' },
+			{ name: 'TikTok', value: 'tiktok' },
+		],
+		default: 'twitter',
+		description: 'Target platform for optimization',
+	},
+
+	// Generate Image fields
+	{
+		displayName: 'Prompt',
+		name: 'prompt',
+		type: 'string',
+		typeOptions: {
+			rows: 3,
+		},
+		required: true,
+		displayOptions: {
+			show: {
+				resource: ['ai'],
+				operation: ['generateImage'],
+			},
+		},
+		default: '',
+		description: 'Description of the image to generate',
+		placeholder: 'A futuristic cityscape at sunset',
+	},
+	{
+		displayName: 'Additional Fields',
+		name: 'additionalFields',
+		type: 'collection',
+		placeholder: 'Add Field',
+		default: {},
+		displayOptions: {
+			show: {
+				resource: ['ai'],
+				operation: ['generateImage'],
+			},
+		},
+		options: [
+			{
+				displayName: 'Style',
+				name: 'style',
+				type: 'options',
+				options: [
+					{ name: 'Photorealistic', value: 'photorealistic' },
+					{ name: 'Illustration', value: 'illustration' },
+					{ name: 'Minimalist', value: 'minimalist' },
+					{ name: 'Abstract', value: 'abstract' },
+					{ name: 'Cinematic', value: 'cinematic' },
+				],
+				default: 'photorealistic',
+				description: 'Image style',
+			},
+			{
+				displayName: 'Platform',
+				name: 'platform',
+				type: 'options',
+				options: [
+					{ name: 'Twitter', value: 'twitter' },
+					{ name: 'Facebook', value: 'facebook' },
+					{ name: 'Instagram', value: 'instagram' },
+					{ name: 'LinkedIn', value: 'linkedin' },
+				],
+				default: 'instagram',
+				description: 'Target platform for sizing',
+			},
+		],
 	},
 ];

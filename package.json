@@ -1,6 +1,6 @@
 {
 	"name": "n8n-nodes-mastablasta",
-	"version": "0.1.0",
+	"version": "0.2.0",
 	"description": "n8n community node to interface with MastaBlasta API - a multi-platform social media posting service",
 	"license": "MIT",
 	"homepage": "https://github.com/ewentling/mb-module",

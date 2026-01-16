@@ -47,10 +47,52 @@ Follow the [installation guide](https://docs.n8n.io/integrations/community-nodes
 - **Predict Engagement**: Predict engagement metrics for content
 - **Rewrite Content**: Rewrite content optimized for different platforms
 - **Best Times**: Get AI-recommended best posting times
+- **Translate Content**: Translate content to different languages
+- **Posting Frequency**: Get optimal posting frequency recommendations
+- **Optimize Image**: Optimize images for social media platforms
+- **Enhance Image**: AI-powered image quality enhancement
+- **Generate Alt Text**: Generate accessibility alt text for images
+- **Generate Image**: Create images using DALL-E 3
 
 ### Analytics
 - **Get Post Analytics**: Retrieve analytics for a specific post
 - **Get Overview**: Get analytics overview with date and platform filters
+
+### Platform
+- **Get All**: Get all supported platforms and their capabilities
+- **Get Post Types**: Get available post types for a platform
+- **Get Post Types Details**: Get detailed post type information
+
+### Viral
+- **Get Hooks**: Access viral content hooks library (1,000+ hooks)
+- **Predict Viral Score**: Predict virality score (0-100) for content
+- **Get Best Practices**: Get platform-specific viral best practices
+
+### Content
+- **Multiply**: Transform one piece into 50+ platform-specific posts
+- **Create Variations**: Generate multiple variations for A/B testing
+- **Preview Post**: Preview how post will appear on platforms
+- **Optimize Post**: Optimize post content for better engagement
+- **Check Schedule Conflicts**: Check for scheduling conflicts
+
+### Bulk
+- **Create Posts**: Create multiple posts at once
+- **Update Posts**: Update multiple posts at once
+- **Delete Posts**: Delete multiple posts at once
+
+### Webhook
+- **Create**: Create a webhook for event notifications
+- **Get Many**: Get all configured webhooks
+- **Delete**: Delete a webhook
+
+### Search
+- **Search Posts**: Search for posts with advanced filters
+
+### URL
+- **Shorten**: Shorten URLs for social media
+- **Get Many**: Get all shortened URLs
+- **Get Stats**: Get URL click statistics
+- **Delete**: Delete a shortened URL
 
 ## Credentials
 

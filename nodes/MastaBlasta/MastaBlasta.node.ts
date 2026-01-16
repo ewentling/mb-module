@@ -13,6 +13,13 @@ import { accountOperations, accountFields } from './resources/account';
 import { mediaOperations, mediaFields } from './resources/media';
 import { aiOperations, aiFields } from './resources/ai';
 import { analyticsOperations, analyticsFields } from './resources/analytics';
+import { platformOperations, platformFields } from './resources/platform';
+import { viralOperations, viralFields } from './resources/viral';
+import { contentOperations, contentFields } from './resources/content';
+import { bulkOperations, bulkFields } from './resources/bulk';
+import { webhookOperations, webhookFields } from './resources/webhook';
+import { searchOperations, searchFields } from './resources/search';
+import { urlOperations, urlFields } from './resources/url';
 
 export class MastaBlasta implements INodeType {
 	description: INodeTypeDescription = {
@@ -68,6 +75,34 @@ export class MastaBlasta implements INodeType {
 						name: 'Analytics',
 						value: 'analytics',
 					},
+					{
+						name: 'Platform',
+						value: 'platform',
+					},
+					{
+						name: 'Viral',
+						value: 'viral',
+					},
+					{
+						name: 'Content',
+						value: 'content',
+					},
+					{
+						name: 'Bulk',
+						value: 'bulk',
+					},
+					{
+						name: 'Webhook',
+						value: 'webhook',
+					},
+					{
+						name: 'Search',
+						value: 'search',
+					},
+					{
+						name: 'URL',
+						value: 'url',
+					},
 				],
 				default: 'post',
 			},
@@ -81,6 +116,20 @@ export class MastaBlasta implements INodeType {
 			...aiFields,
 			...analyticsOperations,
 			...analyticsFields,
+			...platformOperations,
+			...platformFields,
+			...viralOperations,
+			...viralFields,
+			...contentOperations,
+			...contentFields,
+			...bulkOperations,
+			...bulkFields,
+			...webhookOperations,
+			...webhookFields,
+			...searchOperations,
+			...searchFields,
+			...urlOperations,
+			...urlFields,
 		],
 	};
 
@@ -543,6 +592,593 @@ export class MastaBlasta implements INodeType {
 							method: 'POST',
 							url: `${apiPrefix}/ai/best-times`,
 							body,
+						};
+
+						responseData = await this.helpers.httpRequestWithAuthentication.call(
+							this,
+							'mastaBlasta',
+							options,
+						);
+					} else if (operation === 'translateContent') {
+						const content = this.getNodeParameter('content', i) as string;
+						const targetLanguage = this.getNodeParameter('targetLanguage', i) as string;
+
+						const body: IDataObject = {
+							content,
+							target_language: targetLanguage,
+						};
+
+						const options: IHttpRequestOptions = {
+							method: 'POST',
+							url: `${apiPrefix}/ai/translate-content`,
+							body,
+						};
+
+						responseData = await this.helpers.httpRequestWithAuthentication.call(
+							this,
+							'mastaBlasta',
+							options,
+						);
+					} else if (operation === 'postingFrequency') {
+						const platform = this.getNodeParameter('platform', i) as string;
+
+						const body: IDataObject = {
+							platform,
+						};
+
+						const options: IHttpRequestOptions = {
+							method: 'POST',
+							url: `${apiPrefix}/ai/posting-frequency`,
+							body,
+						};
+
+						responseData = await this.helpers.httpRequestWithAuthentication.call(
+							this,
+							'mastaBlasta',
+							options,
+						);
+					} else if (operation === 'optimizeImage') {
+						const imageUrl = this.getNodeParameter('imageUrl', i) as string;
+						const platform = this.getNodeParameter('platform', i, 'twitter') as string;
+
+						const body: IDataObject = {
+							image_url: imageUrl,
+							platform,
+						};
+
+						const options: IHttpRequestOptions = {
+							method: 'POST',
+							url: `${apiPrefix}/ai/optimize-image`,
+							body,
+						};
+
+						responseData = await this.helpers.httpRequestWithAuthentication.call(
+							this,
+							'mastaBlasta',
+							options,
+						);
+					} else if (operation === 'enhanceImage') {
+						const imageUrl = this.getNodeParameter('imageUrl', i) as string;
+
+						const body: IDataObject = {
+							image_url: imageUrl,
+						};
+
+						const options: IHttpRequestOptions = {
+							method: 'POST',
+							url: `${apiPrefix}/ai/enhance-image`,
+							body,
+						};
+
+						responseData = await this.helpers.httpRequestWithAuthentication.call(
+							this,
+							'mastaBlasta',
+							options,
+						);
+					} else if (operation === 'generateAltText') {
+						const imageUrl = this.getNodeParameter('imageUrl', i) as string;
+
+						const body: IDataObject = {
+							image_url: imageUrl,
+						};
+
+						const options: IHttpRequestOptions = {
+							method: 'POST',
+							url: `${apiPrefix}/ai/generate-alt-text`,
+							body,
+						};
+
+						responseData = await this.helpers.httpRequestWithAuthentication.call(
+							this,
+							'mastaBlasta',
+							options,
+						);
+					} else if (operation === 'generateImage') {
+						const prompt = this.getNodeParameter('prompt', i) as string;
+						const additionalFields = this.getNodeParameter(
+							'additionalFields',
+							i,
+							{},
+						) as IDataObject;
+
+						const body: IDataObject = {
+							prompt,
+						};
+
+						if (additionalFields.style) {
+							body.style = additionalFields.style;
+						}
+						if (additionalFields.platform) {
+							body.platform = additionalFields.platform;
+						}
+
+						const options: IHttpRequestOptions = {
+							method: 'POST',
+							url: `${apiPrefix}/ai/generate-image`,
+							body,
+						};
+
+						responseData = await this.helpers.httpRequestWithAuthentication.call(
+							this,
+							'mastaBlasta',
+							options,
+						);
+					}
+				} else if (resource === 'platform') {
+					if (operation === 'getAll') {
+						const options: IHttpRequestOptions = {
+							method: 'GET',
+							url: `${apiPrefix}/platforms`,
+						};
+
+						responseData = await this.helpers.httpRequestWithAuthentication.call(
+							this,
+							'mastaBlasta',
+							options,
+						);
+					} else if (operation === 'getPostTypes') {
+						const platform = this.getNodeParameter('platform', i) as string;
+
+						const options: IHttpRequestOptions = {
+							method: 'GET',
+							url: `${apiPrefix}/platforms/${platform}/post-types`,
+						};
+
+						responseData = await this.helpers.httpRequestWithAuthentication.call(
+							this,
+							'mastaBlasta',
+							options,
+						);
+					} else if (operation === 'getPostTypesDetails') {
+						const platform = this.getNodeParameter('platform', i) as string;
+
+						const options: IHttpRequestOptions = {
+							method: 'GET',
+							url: `${apiPrefix}/platforms/${platform}/post-types/details`,
+						};
+
+						responseData = await this.helpers.httpRequestWithAuthentication.call(
+							this,
+							'mastaBlasta',
+							options,
+						);
+					}
+				} else if (resource === 'viral') {
+					if (operation === 'getHooks') {
+						const additionalFields = this.getNodeParameter(
+							'additionalFields',
+							i,
+							{},
+						) as IDataObject;
+
+						const qs: IDataObject = {};
+
+						if (additionalFields.category && additionalFields.category !== 'all') {
+							qs.category = additionalFields.category;
+						}
+						if (additionalFields.limit) {
+							qs.limit = additionalFields.limit;
+						}
+
+						const options: IHttpRequestOptions = {
+							method: 'GET',
+							url: `${apiPrefix}/viral/hooks`,
+							qs,
+						};
+
+						responseData = await this.helpers.httpRequestWithAuthentication.call(
+							this,
+							'mastaBlasta',
+							options,
+						);
+					} else if (operation === 'predictScore') {
+						const content = this.getNodeParameter('content', i) as string;
+						const platform = this.getNodeParameter('platform', i) as string;
+						const additionalFields = this.getNodeParameter(
+							'additionalFields',
+							i,
+							{},
+						) as IDataObject;
+
+						const body: IDataObject = {
+							content,
+							platform,
+						};
+
+						if (additionalFields.has_media !== undefined) {
+							body.has_media = additionalFields.has_media;
+						}
+
+						const options: IHttpRequestOptions = {
+							method: 'POST',
+							url: `${apiPrefix}/viral/predict-score`,
+							body,
+						};
+
+						responseData = await this.helpers.httpRequestWithAuthentication.call(
+							this,
+							'mastaBlasta',
+							options,
+						);
+					} else if (operation === 'getBestPractices') {
+						const platform = this.getNodeParameter('platform', i) as string;
+
+						const options: IHttpRequestOptions = {
+							method: 'GET',
+							url: `${apiPrefix}/viral/best-practices/${platform}`,
+						};
+
+						responseData = await this.helpers.httpRequestWithAuthentication.call(
+							this,
+							'mastaBlasta',
+							options,
+						);
+					}
+				} else if (resource === 'content') {
+					if (operation === 'multiply') {
+						const content = this.getNodeParameter('content', i) as string;
+						const platforms = this.getNodeParameter('platforms', i) as string[];
+						const additionalFields = this.getNodeParameter(
+							'additionalFields',
+							i,
+							{},
+						) as IDataObject;
+
+						const body: IDataObject = {
+							content,
+							platforms,
+						};
+
+						if (additionalFields.maintain_brand_voice !== undefined) {
+							body.maintain_brand_voice = additionalFields.maintain_brand_voice;
+						}
+
+						const options: IHttpRequestOptions = {
+							method: 'POST',
+							url: `${apiPrefix}/content/multiply`,
+							body,
+						};
+
+						responseData = await this.helpers.httpRequestWithAuthentication.call(
+							this,
+							'mastaBlasta',
+							options,
+						);
+					} else if (operation === 'createVariations') {
+						const content = this.getNodeParameter('content', i) as string;
+						const platform = this.getNodeParameter('platform', i) as string;
+						const count = this.getNodeParameter('count', i, 3) as number;
+
+						const body: IDataObject = {
+							content,
+							platform,
+							count,
+						};
+
+						const options: IHttpRequestOptions = {
+							method: 'POST',
+							url: `${apiPrefix}/content/variations`,
+							body,
+						};
+
+						responseData = await this.helpers.httpRequestWithAuthentication.call(
+							this,
+							'mastaBlasta',
+							options,
+						);
+					} else if (operation === 'preview') {
+						const content = this.getNodeParameter('content', i) as string;
+						const platforms = this.getNodeParameter('platforms', i) as string[];
+
+						const body: IDataObject = {
+							content,
+							platforms,
+						};
+
+						const options: IHttpRequestOptions = {
+							method: 'POST',
+							url: `${apiPrefix}/post/preview`,
+							body,
+						};
+
+						responseData = await this.helpers.httpRequestWithAuthentication.call(
+							this,
+							'mastaBlasta',
+							options,
+						);
+					} else if (operation === 'optimize') {
+						const content = this.getNodeParameter('content', i) as string;
+						const platform = this.getNodeParameter('platform', i) as string;
+
+						const body: IDataObject = {
+							content,
+							platform,
+						};
+
+						const options: IHttpRequestOptions = {
+							method: 'POST',
+							url: `${apiPrefix}/post/optimize`,
+							body,
+						};
+
+						responseData = await this.helpers.httpRequestWithAuthentication.call(
+							this,
+							'mastaBlasta',
+							options,
+						);
+					} else if (operation === 'checkConflicts') {
+						const scheduleTime = this.getNodeParameter('scheduleTime', i) as string;
+						const accountId = this.getNodeParameter('accountId', i, '') as string;
+
+						const body: IDataObject = {
+							schedule_time: scheduleTime,
+						};
+
+						if (accountId) {
+							body.account_id = accountId;
+						}
+
+						const options: IHttpRequestOptions = {
+							method: 'POST',
+							url: `${apiPrefix}/schedule/conflicts`,
+							body,
+						};
+
+						responseData = await this.helpers.httpRequestWithAuthentication.call(
+							this,
+							'mastaBlasta',
+							options,
+						);
+					}
+				} else if (resource === 'bulk') {
+					if (operation === 'createPosts') {
+						const postsData = this.getNodeParameter('postsData', i) as string;
+
+						let posts: IDataObject[];
+						try {
+							posts = JSON.parse(postsData);
+						} catch {
+							throw new NodeOperationError(
+								this.getNode(),
+								'Invalid JSON format for posts data. Please provide valid JSON array.',
+								{ itemIndex: i },
+							);
+						}
+
+						const body: IDataObject = {
+							posts,
+						};
+
+						const options: IHttpRequestOptions = {
+							method: 'POST',
+							url: `${apiPrefix}/bulk/posts/create`,
+							body,
+						};
+
+						responseData = await this.helpers.httpRequestWithAuthentication.call(
+							this,
+							'mastaBlasta',
+							options,
+						);
+					} else if (operation === 'updatePosts') {
+						const postsData = this.getNodeParameter('postsData', i) as string;
+
+						let posts: IDataObject[];
+						try {
+							posts = JSON.parse(postsData);
+						} catch {
+							throw new NodeOperationError(
+								this.getNode(),
+								'Invalid JSON format for posts data. Please provide valid JSON array.',
+								{ itemIndex: i },
+							);
+						}
+
+						const body: IDataObject = {
+							posts,
+						};
+
+						const options: IHttpRequestOptions = {
+							method: 'POST',
+							url: `${apiPrefix}/bulk/posts/update`,
+							body,
+						};
+
+						responseData = await this.helpers.httpRequestWithAuthentication.call(
+							this,
+							'mastaBlasta',
+							options,
+						);
+					} else if (operation === 'deletePosts') {
+						const postIds = this.getNodeParameter('postIds', i) as string;
+
+						const body: IDataObject = {
+							post_ids: postIds.split(',').map((id) => id.trim()),
+						};
+
+						const options: IHttpRequestOptions = {
+							method: 'POST',
+							url: `${apiPrefix}/bulk/posts/delete`,
+							body,
+						};
+
+						responseData = await this.helpers.httpRequestWithAuthentication.call(
+							this,
+							'mastaBlasta',
+							options,
+						);
+					}
+				} else if (resource === 'webhook') {
+					if (operation === 'create') {
+						const url = this.getNodeParameter('url', i) as string;
+						const events = this.getNodeParameter('events', i) as string[];
+						const additionalFields = this.getNodeParameter(
+							'additionalFields',
+							i,
+							{},
+						) as IDataObject;
+
+						const body: IDataObject = {
+							url,
+							events,
+						};
+
+						if (additionalFields.secret) {
+							body.secret = additionalFields.secret;
+						}
+
+						const options: IHttpRequestOptions = {
+							method: 'POST',
+							url: `${apiPrefix}/webhooks`,
+							body,
+						};
+
+						responseData = await this.helpers.httpRequestWithAuthentication.call(
+							this,
+							'mastaBlasta',
+							options,
+						);
+					} else if (operation === 'getAll') {
+						const options: IHttpRequestOptions = {
+							method: 'GET',
+							url: `${apiPrefix}/webhooks`,
+						};
+
+						responseData = await this.helpers.httpRequestWithAuthentication.call(
+							this,
+							'mastaBlasta',
+							options,
+						);
+					} else if (operation === 'delete') {
+						const webhookId = this.getNodeParameter('webhookId', i) as string;
+
+						const options: IHttpRequestOptions = {
+							method: 'DELETE',
+							url: `${apiPrefix}/webhooks/${webhookId}`,
+						};
+
+						responseData = await this.helpers.httpRequestWithAuthentication.call(
+							this,
+							'mastaBlasta',
+							options,
+						);
+					}
+				} else if (resource === 'search') {
+					if (operation === 'searchPosts') {
+						const query = this.getNodeParameter('query', i, '') as string;
+						const filters = this.getNodeParameter('filters', i, {}) as IDataObject;
+
+						const qs: IDataObject = {};
+
+						if (query) {
+							qs.q = query;
+						}
+						if (filters.platform && filters.platform !== 'all') {
+							qs.platform = filters.platform;
+						}
+						if (filters.status && filters.status !== 'all') {
+							qs.status = filters.status;
+						}
+						if (filters.start_date) {
+							qs.start_date = filters.start_date;
+						}
+						if (filters.end_date) {
+							qs.end_date = filters.end_date;
+						}
+						if (filters.limit) {
+							qs.limit = filters.limit;
+						}
+
+						const options: IHttpRequestOptions = {
+							method: 'GET',
+							url: `${apiPrefix}/search/posts`,
+							qs,
+						};
+
+						responseData = await this.helpers.httpRequestWithAuthentication.call(
+							this,
+							'mastaBlasta',
+							options,
+						);
+					}
+				} else if (resource === 'url') {
+					if (operation === 'shorten') {
+						const url = this.getNodeParameter('url', i) as string;
+						const additionalFields = this.getNodeParameter(
+							'additionalFields',
+							i,
+							{},
+						) as IDataObject;
+
+						const body: IDataObject = {
+							url,
+						};
+
+						if (additionalFields.custom_code) {
+							body.custom_code = additionalFields.custom_code;
+						}
+
+						const options: IHttpRequestOptions = {
+							method: 'POST',
+							url: `${apiPrefix}/urls/shorten`,
+							body,
+						};
+
+						responseData = await this.helpers.httpRequestWithAuthentication.call(
+							this,
+							'mastaBlasta',
+							options,
+						);
+					} else if (operation === 'getAll') {
+						const options: IHttpRequestOptions = {
+							method: 'GET',
+							url: `${apiPrefix}/urls`,
+						};
+
+						responseData = await this.helpers.httpRequestWithAuthentication.call(
+							this,
+							'mastaBlasta',
+							options,
+						);
+					} else if (operation === 'getStats') {
+						const shortCode = this.getNodeParameter('shortCode', i) as string;
+
+						const options: IHttpRequestOptions = {
+							method: 'GET',
+							url: `${apiPrefix}/urls/${shortCode}/stats`,
+						};
+
+						responseData = await this.helpers.httpRequestWithAuthentication.call(
+							this,
+							'mastaBlasta',
+							options,
+						);
+					} else if (operation === 'delete') {
+						const shortCode = this.getNodeParameter('shortCode', i) as string;
+
+						const options: IHttpRequestOptions = {
+							method: 'DELETE',
+							url: `${apiPrefix}/urls/${shortCode}`,
 						};
 
 						responseData = await this.helpers.httpRequestWithAuthentication.call(
