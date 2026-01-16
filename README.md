@@ -4,6 +4,12 @@ This is an n8n community node that lets you use [MastaBlasta](https://github.com
 
 MastaBlasta is a multi-platform social media posting service that allows you to post to multiple social media platforms at once, with AI-powered features for content optimization.
 
+**🎉 Version 1.0.0 - Complete API Coverage**
+- **21 Resources** with **150+ Operations**
+- **100% API Coverage** - All MastaBlasta endpoints implemented
+- Support for **9 social platforms**: Twitter, Facebook, Instagram, LinkedIn, TikTok, YouTube, Mastodon, Bluesky, Threads
+- Advanced features: Video generation, Voiceover studio, AI intelligence, Social monitoring, A/B testing
+
 [n8n](https://n8n.io/) is a [fair-code licensed](https://docs.n8n.io/reference/license/) workflow automation platform.
 
 [Installation](#installation)  
@@ -93,6 +99,71 @@ Follow the [installation guide](https://docs.n8n.io/integrations/community-nodes
 - **Get Many**: Get all shortened URLs
 - **Get Stats**: Get URL click statistics
 - **Delete**: Delete a shortened URL
+
+### Video
+- **Generate Script**: AI video script generation
+- **Create Slideshow**: Create slideshow from images
+- **Generate Captions**: Generate video captions
+- **Optimize Video**: Optimize for platforms
+- **Get Video Specs**: Platform video specifications
+- **+18 more operations**: Subtitles, thumbnails, watermarks, intro/outro, etc.
+
+### Voiceover
+- **Get Supported Languages**: List available languages
+- **Generate Pronunciation Guide**: Pronunciation assistance
+- **Add Emotion Markers**: Add emotional cues
+- **Multi-Voice Script**: Multiple voice support
+- **+6 more operations**: Breath marks, TTS config, music sync, etc.
+
+### Social Monitor
+- **Create**: Create social monitoring
+- **Get Many**: List all monitors
+- **Get Results**: Get monitoring results
+- **Refresh**: Refresh monitor data
+- **+2 more operations**: Update, delete monitors
+
+### Video Clip
+- **Analyze**: Analyze video for viral clips
+- **Get Video Info**: Extract video information
+- **Schedule**: Schedule clips for posting
+- **+3 more operations**: Metadata, download info, status
+
+### Template
+- **Create**: Create content template
+- **Get**: Get template details
+- **Get Many**: List all templates
+- **Delete**: Delete template
+
+### A/B Test
+- **Create Versions**: Create post variations
+- **Get Versions**: List test versions
+- **Publish Version**: Publish winning version
+- **Set Winner**: Mark version as winner
+- **Compare**: Compare test results
+
+### Bulk Import
+- **Validate**: Validate import data
+- **Execute**: Execute bulk import
+- **Get Import**: Check import status
+- **Get Many**: List all imports
+
+### Chatbot
+- **Create Template**: Create response template
+- **Suggest Response**: AI-suggested responses
+- **Get Interactions**: List interactions
+- **Get Stats**: Chatbot statistics
+- **+5 more operations**: Template CRUD, create interactions
+
+### Connection
+- **Check Health**: Connection health check
+- **Validate**: Validate connection
+- **Quick Connect**: Fast platform connection
+- **Troubleshoot**: Connection troubleshooting
+- **+6 more operations**: Permissions, reconnect, auto-refresh
+
+### Retry
+- **Retry Failed Posts**: Retry all failed posts
+- **Retry Post**: Retry specific post
 
 ## Credentials
 

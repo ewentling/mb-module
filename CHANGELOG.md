@@ -5,6 +5,65 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.0] - 2026-01-16
+
+### 🎉 COMPLETE API COVERAGE - 100% of MastaBlasta endpoints implemented
+
+### Added - 80+ New Operations
+- Video generation & processing resource (23 operations)
+  - AI video script generation
+  - Slideshow creation and rendering
+  - Video captions, subtitles, thumbnails
+  - Aspect ratio conversion, watermarks
+  - Text overlays, intro/outro generation
+  - Multi-platform export
+  - B-roll suggestions, batch creation
+- Voiceover studio resource (10 operations)
+  - Supported languages, pronunciation guides
+  - Emotion markers, multi-voice scripts
+  - Breath marks, duration estimation
+  - TTS configuration, music sync
+- Social monitoring resource (6 operations)
+  - Create, update, delete monitors
+  - Get results and refresh
+- Video clipping resource (6 operations)
+  - Analyze videos for viral clips
+  - Video info, metadata, download info
+  - Schedule clips for posting
+- Template resource (4 operations)
+  - Create, get, list, delete content templates
+- A/B testing resource (5 operations)
+  - Create post versions
+  - Publish versions, set winners
+  - Compare test results
+- Bulk import resource (4 operations)
+  - Validate and execute bulk imports
+  - Track import status
+- Chatbot/Auto-response resource (9 operations)
+  - Response templates CRUD
+  - AI-suggested responses
+  - Interaction tracking and stats
+- Connection management resource (10 operations)
+  - Health checks, validation
+  - Reconnect instructions
+  - Quick connect, troubleshooting
+  - Permission checks, auto-refresh
+- Retry logic resource (2 operations)
+  - Retry failed posts
+  - Retry specific post
+- Additional AI operations (4 operations)
+  - Predict performance
+  - Compare variations
+  - Train custom model
+  - Get AI service status
+- Analytics compare operation
+
+### Improved
+- API coverage: 50% → 100%
+- Operations: 70+ → 150+
+- Resources: 12 → 21
+- Complete feature parity with MastaBlasta API
+
 ## [0.2.0] - 2026-01-16
 
 ### Added
