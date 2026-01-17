@@ -39,6 +39,8 @@ npm install ewentling/mb-module
 
 The package will automatically build during installation via the `prepare` script.
 
+**Note**: Build tools (`@n8n/node-cli`, `typescript`) are included in dependencies to support GitHub installations. When installing from npm (once published), the pre-built `dist/` folder is already included.
+
 ### Manual Installation
 
 If you need to build manually:
