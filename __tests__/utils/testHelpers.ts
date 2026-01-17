@@ -6,6 +6,17 @@ import type {
 } from 'n8n-workflow';
 
 /**
+ * Custom error type for API errors with status code
+ */
+interface ApiError extends Error {
+	statusCode: number;
+	response: {
+		statusCode: number;
+		body: { error: string };
+	};
+}
+
+/**
  * Mock IExecuteFunctions for testing n8n nodes
  */
 export function mockExecuteFunctions(
@@ -29,7 +40,7 @@ export function mockExecuteFunctions(
 		},
 		getCredentials: async () => credentials,
 		helpers: {
-			httpRequestWithAuthentication: async () => {
+			httpRequestWithAuthentication: async (): Promise<IDataObject> => {
 				// Mock HTTP request - can be overridden in tests
 				return {};
 			},
@@ -127,11 +138,8 @@ export function createSampleMedia(overrides: Partial<IDataObject> = {}): IDataOb
 export function createErrorResponse(
 	message: string = 'Test error',
 	statusCode: number = 400,
-): Error & { statusCode: number; response: { statusCode: number; body: { error: string } } } {
-	const error = new Error(message) as Error & {
-		statusCode: number;
-		response: { statusCode: number; body: { error: string } };
-	};
+): ApiError {
+	const error = new Error(message) as ApiError;
 	error.statusCode = statusCode;
 	error.response = {
 		statusCode,
