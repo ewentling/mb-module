@@ -2,7 +2,6 @@ import type {
 	IExecuteFunctions,
 	INodeExecutionData,
 	ICredentialDataDecryptedObject,
-	IHttpRequestOptions,
 	IDataObject,
 } from 'n8n-workflow';
 
@@ -11,14 +10,14 @@ import type {
  */
 export function mockExecuteFunctions(
 	inputData: INodeExecutionData[],
-	nodeParameters: Record<string, any> = {},
+	nodeParameters: Record<string, IDataObject> = {},
 	credentials: ICredentialDataDecryptedObject = {},
 ): IExecuteFunctions {
-	const parameterValues: Record<string, any> = { ...nodeParameters };
+	const parameterValues: Record<string, IDataObject> = { ...nodeParameters };
 
 	return {
 		getInputData: () => inputData,
-		getNodeParameter: (parameterName: string, itemIndex: number, defaultValue?: any) => {
+		getNodeParameter: (parameterName: string, itemIndex: number, defaultValue?: IDataObject) => {
 			const key = `${parameterName}_${itemIndex}`;
 			if (parameterValues[key] !== undefined) {
 				return parameterValues[key];
@@ -30,14 +29,11 @@ export function mockExecuteFunctions(
 		},
 		getCredentials: async () => credentials,
 		helpers: {
-			httpRequestWithAuthentication: async (
-				credentialType: string,
-				options: IHttpRequestOptions,
-			) => {
+			httpRequestWithAuthentication: async () => {
 				// Mock HTTP request - can be overridden in tests
 				return {};
 			},
-		} as any,
+		} as IExecuteFunctions['helpers'],
 		getNode: () => ({
 			name: 'MastaBlasta Test Node',
 			type: 'n8n-nodes-mastablasta.mastaBlasta',
@@ -53,13 +49,13 @@ export function mockExecuteFunctions(
 			connections: {},
 			settings: {},
 		}),
-	} as any;
+	} as IExecuteFunctions;
 }
 
 /**
  * Create mock HTTP response helper
  */
-export function mockHttpResponse(statusCode: number, data: any) {
+export function mockHttpResponse(statusCode: number, data: IDataObject) {
 	return {
 		statusCode,
 		body: data,
@@ -131,8 +127,11 @@ export function createSampleMedia(overrides: Partial<IDataObject> = {}): IDataOb
 export function createErrorResponse(
 	message: string = 'Test error',
 	statusCode: number = 400,
-): any {
-	const error: any = new Error(message);
+): Error & { statusCode: number; response: { statusCode: number; body: { error: string } } } {
+	const error = new Error(message) as Error & {
+		statusCode: number;
+		response: { statusCode: number; body: { error: string } };
+	};
 	error.statusCode = statusCode;
 	error.response = {
 		statusCode,
