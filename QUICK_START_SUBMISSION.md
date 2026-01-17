@@ -69,7 +69,7 @@ All requirements from [n8n's verification guidelines](https://docs.n8n.io/integr
 - ✅ **Types**: Proper TypeScript throughout (no `any`)
 - ✅ **Icon**: mastablasta.svg present
 - ✅ **Credentials**: Properly configured (password fields for API keys)
-- ✅ **Operations**: 150+ operations across 21 resources
+- ✅ **Operations**: 150+ operations across 22 resources
 - ✅ **Documentation**: Comprehensive README
 - ✅ **Security**: No vulnerabilities found (CodeQL scan)
 - ✅ **License**: MIT

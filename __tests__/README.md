@@ -49,7 +49,7 @@ npm run test:coverage
 ### Unit Tests
 - ✅ Credential configuration and authentication
 - ✅ Node structure and properties
-- ✅ All 21 resources with operations
+- ✅ All 22 resources with operations
 - ✅ Field definitions and validations
 - ✅ Platform support (9 platforms)
 - ✅ Operation coverage (150+ operations)

@@ -95,7 +95,7 @@ This node package has been thoroughly reviewed against [n8n's official community
 | version specified | ✅ PASS | Version 1 |
 | inputs/outputs defined | ✅ PASS | Main connection type |
 | credentials configured | ✅ PASS | mastaBlasta credentials required |
-| Resources properly defined | ✅ PASS | 21 resources implemented |
+| Resources properly defined | ✅ PASS | 22 resources implemented |
 | Operations properly defined | ✅ PASS | 150+ operations |
 
 ### ✅ 6. Credentials Implementation
@@ -173,7 +173,7 @@ n8n-nodes-mastablasta/
 
 ### Resources and Operations Coverage
 
-The node implements 21 resources with 150+ operations, providing 100% coverage of the MastaBlasta API:
+The node implements 22 resources with 150+ operations, providing 100% coverage of the MastaBlasta API:
 
 1. **Post** (6 operations): Create, Get, Get Many, Update, Delete, Publish
 2. **Account** (6 operations): Create, Get, Get Many, Update, Delete, Test
@@ -198,7 +198,7 @@ The node implements 21 resources with 150+ operations, providing 100% coverage o
 21. **Connection** (10 operations): Check Health, Validate, Quick Connect, Troubleshoot, and 6 more
 22. **Retry** (2 operations): Retry Failed Posts, Retry Post
 
-**Total**: 150+ operations across 21 resources
+**Total**: 150+ operations across 22 resources
 
 ### Code Quality Metrics
 
