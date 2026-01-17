@@ -10,14 +10,14 @@ import type {
  */
 export function mockExecuteFunctions(
 	inputData: INodeExecutionData[],
-	nodeParameters: Record<string, IDataObject> = {},
+	nodeParameters: Record<string, unknown> = {},
 	credentials: ICredentialDataDecryptedObject = {},
 ): IExecuteFunctions {
-	const parameterValues: Record<string, IDataObject> = { ...nodeParameters };
+	const parameterValues: Record<string, unknown> = { ...nodeParameters };
 
 	return {
 		getInputData: () => inputData,
-		getNodeParameter: (parameterName: string, itemIndex: number, defaultValue?: IDataObject) => {
+		getNodeParameter: (parameterName: string, itemIndex: number, defaultValue?: unknown) => {
 			const key = `${parameterName}_${itemIndex}`;
 			if (parameterValues[key] !== undefined) {
 				return parameterValues[key];
@@ -55,7 +55,7 @@ export function mockExecuteFunctions(
 /**
  * Create mock HTTP response helper
  */
-export function mockHttpResponse(statusCode: number, data: IDataObject) {
+export function mockHttpResponse(statusCode: number, data: unknown) {
 	return {
 		statusCode,
 		body: data,
