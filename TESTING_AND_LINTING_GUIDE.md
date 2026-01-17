@@ -2,6 +2,8 @@
 
 This guide provides step-by-step instructions for testing and linting this n8n community node package to ensure it meets all requirements for submission to the n8n community repository.
 
+Based on the official [n8n community node documentation](https://docs.n8n.io/integrations/creating-nodes/deploy/submit-community-nodes/) and [verification guidelines](https://docs.n8n.io/integrations/creating-nodes/build/reference/verification-guidelines/).
+
 ## Table of Contents
 - [Prerequisites](#prerequisites)
 - [Installation](#installation)
@@ -266,13 +268,13 @@ docker run -it --rm \
 
 ## Pre-Submission Checklist
 
-Before submitting to the n8n community repository, verify:
+Before submitting to the n8n community repository, verify all items from the [official standards](https://docs.n8n.io/integrations/creating-nodes/deploy/submit-community-nodes/#standards) and [verification guidelines](https://docs.n8n.io/integrations/creating-nodes/build/reference/verification-guidelines/):
 
 ### 1. Package Structure ✅
 - [x] Package name follows convention: `n8n-nodes-mastablasta`
 - [x] Contains required keyword: `n8n-community-node-package`
 - [x] `package.json` has proper `n8n` section
-- [x] No runtime dependencies (only `devDependencies` and `peerDependencies`)
+- [x] **No runtime dependencies** (only `devDependencies` and `peerDependencies`) - [Critical requirement](https://docs.n8n.io/integrations/creating-nodes/build/reference/verification-guidelines/#no-external-dependencies)
 
 ### 2. Code Quality ✅
 - [x] All linting passes: `npm run lint`
@@ -281,19 +283,22 @@ Before submitting to the n8n community repository, verify:
 - [x] TypeScript types are properly defined
 - [x] No use of `any` type
 - [x] No unused variables or imports
+- [x] No access to environment variables or file system
 
 ### 3. Documentation ✅
 - [x] README.md with clear usage instructions
 - [x] Comprehensive operation documentation
 - [x] Credential setup instructions
 - [x] Example workflows
+- [x] All content in English only
 
 ### 4. Node Implementation ✅
 - [x] Icon file present (`mastablasta.svg`)
-- [x] Credentials properly configured
+- [x] Credentials properly configured (API keys as password fields)
 - [x] All resources implement required operations
 - [x] Error handling implemented
 - [x] Proper use of n8n workflow types
+- [x] Follows [UX guidelines](https://docs.n8n.io/integrations/creating-nodes/build/reference/ux-guidelines/)
 
 ### 5. Testing ✅
 - [x] Integration tests pass
@@ -317,7 +322,7 @@ Expected output:
 
 ## Community Node Submission Process
 
-Once all checks pass, follow these steps to submit your node:
+Follow the [official submission process](https://docs.n8n.io/integrations/creating-nodes/deploy/submit-community-nodes/) to get your node verified by n8n.
 
 ### 1. Prepare for Publication
 
@@ -341,7 +346,7 @@ npm publish
 
 ### 3. Submit for Verification
 
-1. Go to [n8n Creator Portal](https://creator.n8n.io/)
+1. Go to [n8n Creator Portal](https://creators.n8n.io/nodes)
 2. Sign in with your GitHub account
 3. Click "Submit a node"
 4. Enter your npm package name: `n8n-nodes-mastablasta`
@@ -349,6 +354,8 @@ npm publish
    - Description
    - Link to MastaBlasta API documentation
    - Screenshots/examples (optional but recommended)
+
+**Note**: Per the [submission guidelines](https://docs.n8n.io/integrations/creating-nodes/deploy/submit-community-nodes/#submit-your-node-for-verification-by-n8n), n8n reserves the right to reject nodes that compete with paid or enterprise features.
 
 ### 4. Wait for Review
 
@@ -375,8 +382,12 @@ Once approved, your node will:
 
 ## Additional Resources
 
-- [n8n Community Nodes Documentation](https://docs.n8n.io/integrations/community-nodes/)
-- [Building Community Nodes Guide](https://docs.n8n.io/integrations/community-nodes/build-community-nodes/)
+- [n8n Creating Nodes Overview](https://docs.n8n.io/integrations/creating-nodes/overview/)
+- [Building Community Nodes](https://docs.n8n.io/integrations/creating-nodes/build/)
+- [Community Node Submission Process](https://docs.n8n.io/integrations/creating-nodes/deploy/submit-community-nodes/)
+- [Verification Guidelines](https://docs.n8n.io/integrations/creating-nodes/build/reference/verification-guidelines/)
+- [UX Guidelines](https://docs.n8n.io/integrations/creating-nodes/build/reference/ux-guidelines/)
+- [n8n-node CLI Tool](https://docs.n8n.io/integrations/creating-nodes/build/n8n-node/)
 - [n8n Community Forum](https://community.n8n.io/)
 - [n8n GitHub Repository](https://github.com/n8n-io/n8n)
 - [MastaBlasta API Documentation](https://github.com/ewentling/MastaBlasta)

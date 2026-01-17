@@ -1,6 +1,8 @@
 # Quick Start: Getting Your n8n Node Approved
 
-This is a quick reference guide. For detailed instructions, see [TESTING_AND_LINTING_GUIDE.md](./TESTING_AND_LINTING_GUIDE.md) and [N8N_COMPLIANCE_REPORT.md](./N8N_COMPLIANCE_REPORT.md).
+This is a quick reference guide based on the [official n8n community node submission process](https://docs.n8n.io/integrations/creating-nodes/deploy/submit-community-nodes/). 
+
+For detailed instructions, see [TESTING_AND_LINTING_GUIDE.md](./TESTING_AND_LINTING_GUIDE.md) and [N8N_COMPLIANCE_REPORT.md](./N8N_COMPLIANCE_REPORT.md).
 
 ## ✅ Status: READY FOR SUBMISSION
 
@@ -43,11 +45,13 @@ npm publish
 
 ### 2. Submit to n8n
 
-1. Go to [n8n Creator Portal](https://creator.n8n.io/)
+1. Go to [n8n Creator Portal](https://creators.n8n.io/nodes)
 2. Sign in with your GitHub account
 3. Click "Submit a node"
 4. Enter package name: `n8n-nodes-mastablasta`
 5. Submit
+
+**Important**: Per [n8n's policy](https://docs.n8n.io/integrations/creating-nodes/deploy/submit-community-nodes/#submit-your-node-for-verification-by-n8n), they reserve the right to reject nodes that compete with paid or enterprise features.
 
 ### 3. Wait for Review
 
@@ -55,18 +59,22 @@ The n8n team typically reviews within 1-2 weeks. You'll receive notifications vi
 
 ## What Was Verified ✅
 
+All requirements from [n8n's verification guidelines](https://docs.n8n.io/integrations/creating-nodes/build/reference/verification-guidelines/):
+
 - ✅ **Package naming**: Follows `n8n-nodes-*` convention
 - ✅ **Keywords**: Contains `n8n-community-node-package`
-- ✅ **Zero runtime dependencies**: Critical requirement met
+- ✅ **Zero runtime dependencies**: Critical requirement met ([details](https://docs.n8n.io/integrations/creating-nodes/build/reference/verification-guidelines/#no-external-dependencies))
 - ✅ **Build system**: Uses official @n8n/node-cli
 - ✅ **Code quality**: All 13 linting errors fixed
 - ✅ **Types**: Proper TypeScript throughout (no `any`)
 - ✅ **Icon**: mastablasta.svg present
-- ✅ **Credentials**: Properly configured
+- ✅ **Credentials**: Properly configured (password fields for API keys)
 - ✅ **Operations**: 150+ operations across 21 resources
 - ✅ **Documentation**: Comprehensive README
 - ✅ **Security**: No vulnerabilities found (CodeQL scan)
 - ✅ **License**: MIT
+- ✅ **No environment variables or file system access**: As required by [guidelines](https://docs.n8n.io/integrations/creating-nodes/build/reference/verification-guidelines/#no-access-to-environment-variables-or-file-system)
+- ✅ **English only**: All UI and documentation in English
 
 ## Key Documents
 
@@ -125,7 +133,8 @@ npm run lint
 
 - **Issues**: [GitHub Issues](https://github.com/ewentling/mb-module/issues)
 - **n8n Community**: [Community Forum](https://community.n8n.io/)
-- **n8n Docs**: [Creating Nodes](https://docs.n8n.io/integrations/creating-nodes/overview/)
+- **n8n Docs**: [Creating Nodes Overview](https://docs.n8n.io/integrations/creating-nodes/overview/)
+- **Submission Process**: [Official Guide](https://docs.n8n.io/integrations/creating-nodes/deploy/submit-community-nodes/)
 
 ## Next Steps After Approval
 

@@ -7,7 +7,7 @@
 
 ## Executive Summary
 
-This node package has been thoroughly reviewed against n8n's community node requirements and guidelines. All mandatory requirements are met, and the package is ready for submission to the n8n community repository.
+This node package has been thoroughly reviewed against [n8n's official community node requirements](https://docs.n8n.io/integrations/creating-nodes/deploy/submit-community-nodes/) and [verification guidelines](https://docs.n8n.io/integrations/creating-nodes/build/reference/verification-guidelines/). All mandatory requirements are met, and the package is ready for submission to the n8n community repository.
 
 ## Compliance Checklist
 
@@ -33,7 +33,7 @@ This node package has been thoroughly reviewed against n8n's community node requ
 | Peer dependency on n8n-workflow | ✅ PASS | `n8n-workflow: "*"` in peerDependencies |
 | No restricted modules imported | ✅ PASS | No external runtime imports found |
 
-**Key Finding**: The package correctly has NO runtime dependencies, which is a critical requirement for n8n community nodes. All imports are from:
+**Key Finding**: The package correctly has NO runtime dependencies, which is a [critical requirement for verified community nodes](https://docs.n8n.io/integrations/creating-nodes/build/reference/verification-guidelines/#no-external-dependencies). All imports are from:
 - `n8n-workflow` (peer dependency)
 - Node.js built-ins
 - Relative imports within the project
@@ -217,6 +217,8 @@ The node implements 21 resources with 150+ operations, providing 100% coverage o
 - ✅ JWT authentication supported for production
 - ✅ No hardcoded secrets or credentials
 - ✅ Proper error handling prevents information leakage
+- ✅ No access to environment variables or file system (per [verification guidelines](https://docs.n8n.io/integrations/creating-nodes/build/reference/verification-guidelines/#no-access-to-environment-variables-or-file-system))
+- ✅ All data passed through node parameters
 
 ## Testing Results
 
@@ -260,7 +262,7 @@ While test execution has import configuration issues to resolve, the test infras
 
 **Overall Status**: ✅ **READY FOR SUBMISSION**
 
-This n8n community node package **fully complies** with all n8n community node requirements:
+This n8n community node package **fully complies** with all [n8n community node requirements](https://docs.n8n.io/integrations/creating-nodes/deploy/submit-community-nodes/#standards) and [verification guidelines](https://docs.n8n.io/integrations/creating-nodes/build/reference/verification-guidelines/):
 
 ✅ **Package Structure**: Perfect  
 ✅ **Dependencies**: Perfect (zero runtime dependencies)  
@@ -282,7 +284,7 @@ This n8n community node package **fully complies** with all n8n community node r
    ```
 
 2. **Submit to n8n Creator Portal**:
-   - Visit: https://creator.n8n.io/
+   - Visit: https://creators.n8n.io/nodes
    - Submit package: `n8n-nodes-mastablasta`
    - Wait for review
 
@@ -292,8 +294,11 @@ This n8n community node package **fully complies** with all n8n community node r
 
 ## Additional Resources
 
-- [n8n Community Nodes Documentation](https://docs.n8n.io/integrations/community-nodes/)
-- [Building Community Nodes Guide](https://docs.n8n.io/integrations/community-nodes/build-community-nodes/)
+- [n8n Community Nodes Documentation](https://docs.n8n.io/integrations/creating-nodes/overview/)
+- [Building Community Nodes Guide](https://docs.n8n.io/integrations/creating-nodes/build/)
+- [Community Node Submission Process](https://docs.n8n.io/integrations/creating-nodes/deploy/submit-community-nodes/)
+- [Verification Guidelines](https://docs.n8n.io/integrations/creating-nodes/build/reference/verification-guidelines/)
+- [UX Guidelines](https://docs.n8n.io/integrations/creating-nodes/build/reference/ux-guidelines/)
 - [Testing and Linting Guide](./TESTING_AND_LINTING_GUIDE.md)
 - [MastaBlasta API Documentation](https://github.com/ewentling/MastaBlasta)
 
