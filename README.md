@@ -21,7 +21,9 @@ MastaBlasta is a multi-platform social media posting service that allows you to 
 
 ## Installation
 
-### From npm (Recommended)
+### From npm (Recommended - Proper Registration)
+
+**⚠️ IMPORTANT**: Always use n8n's built-in Community Nodes installer for proper registration in n8n's database.
 
 Once published, install via n8n Community Nodes:
 
@@ -29,7 +31,11 @@ Once published, install via n8n Community Nodes:
 2. Click **Install** and enter: `n8n-nodes-mastablasta`
 3. Click **Install** and restart n8n
 
+This method ensures the package is properly registered in n8n's `installed_packages` and `installed_nodes` database tables, which is required for n8n to recognize and load the node at startup.
+
 ### From GitHub (Development)
+
+**⚠️ WARNING**: Installing directly from GitHub or manually does NOT register the package in n8n's database. The node files will exist but n8n won't load them at startup. This method is only for development/testing with custom loading mechanisms.
 
 For development or testing the latest version:
 
@@ -37,22 +43,25 @@ For development or testing the latest version:
 npm install ewentling/mb-module
 ```
 
-The package will automatically build during installation via the `prepare` script.
+The package will automatically build during installation via the `prepare` script, creating the required `dist/` folder.
 
 **Note**: Build tools (`@n8n/node-cli`, `typescript`) are included in dependencies to support GitHub installations. When installing from npm (once published), the pre-built `dist/` folder is already included.
 
-### Manual Installation
+### Manual Installation (Advanced)
 
-If you need to build manually:
+**⚠️ WARNING**: Manual installation requires database registration. Use n8n's Community Nodes UI instead.
+
+For contributors and advanced users:
 
 ```bash
 git clone https://github.com/ewentling/mb-module.git
 cd mb-module
 npm install
 npm run build
+npm pack
 ```
 
-Then link or copy the package to your n8n custom nodes directory.
+Then use n8n's Community Nodes installer to install the generated `.tgz` file, which ensures proper database registration.
 
 For more details, follow the [installation guide](https://docs.n8n.io/integrations/community-nodes/installation/) in the n8n community nodes documentation.
 
@@ -263,18 +272,20 @@ To set up credentials:
 
 If the MastaBlasta node doesn't appear in n8n after installation:
 
-1. **Check the dist folder exists**: The node requires compiled JavaScript files in the `dist/` folder
+1. **Verify you used n8n's Community Nodes installer**: Manual installation or direct npm install bypasses n8n's database registration. The node files may exist but n8n won't load them. **Solution**: Uninstall and reinstall using n8n's UI (Settings > Community Nodes).
+
+2. **Check the dist folder exists**: The node requires compiled JavaScript files in the `dist/` folder
    ```bash
    ls -la node_modules/n8n-nodes-mastablasta/dist/
    ```
 
-2. **Rebuild if necessary**: If installing from GitHub, the build should happen automatically. If not:
+3. **Rebuild if necessary**: If installing from GitHub for development, the build should happen automatically. If not:
    ```bash
    cd node_modules/n8n-nodes-mastablasta
    npm run build
    ```
 
-3. **Restart n8n**: After installation or rebuilding, restart n8n completely
+4. **Restart n8n**: After installation or rebuilding, restart n8n completely
    ```bash
    n8n stop
    n8n start
@@ -283,6 +294,8 @@ If the MastaBlasta node doesn't appear in n8n after installation:
 4. **Check n8n logs**: Look for any errors related to loading community nodes
 
 5. **Verify n8n version**: This node requires n8n version 1.0 or higher
+
+6. **Database registration issue**: If you manually copied files to `/home/node/.n8n/nodes/node_modules/`, n8n won't recognize the package because it's not registered in the database. n8n tracks community packages in PostgreSQL tables (`installed_packages` and `installed_nodes`). **Solution**: Always use n8n's Community Nodes UI installer for proper registration.
 
 ### Build Errors
 
