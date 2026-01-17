@@ -28,3 +28,4 @@ logs/
 # Testing
 coverage/
 .nyc_output/
+.jest/
