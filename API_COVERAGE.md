@@ -12,7 +12,7 @@ This document details the MastaBlasta API endpoints and their implementation sta
 
 ### ✅ ALL FEATURES FULLY IMPLEMENTED (100%)
 
-The n8n MastaBlasta module now implements **ALL** available API endpoints across **21 resources**.
+The n8n MastaBlasta module now implements **ALL** available API endpoints across **22 resources**.
 
 #### Core Features (6/6 - 100%)
 - ✅ Post Management (6 operations)

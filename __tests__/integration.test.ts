@@ -59,7 +59,9 @@ describe('MastaBlasta Integration Tests', () => {
 				);
 				expect(operationParam).toBeDefined();
 				expect(operationParam?.options).toBeDefined();
-				expect((operationParam?.options as Array<any>).length).toBeGreaterThan(0);
+				expect(
+					(operationParam?.options as Array<{ name: string; value: string }>).length,
+				).toBeGreaterThan(0);
 			});
 		});
 
@@ -218,7 +220,9 @@ describe('MastaBlasta Integration Tests', () => {
 						p.displayOptions?.show?.resource?.includes(resource.value),
 				);
 				if (operationParam?.options) {
-					totalOperations += (operationParam.options as Array<any>).length;
+					totalOperations += (
+						operationParam.options as Array<{ name: string; value: string }>
+					).length;
 				}
 			});
 

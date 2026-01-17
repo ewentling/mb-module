@@ -231,7 +231,7 @@ describe('All Resources Coverage', () => {
 			];
 
 			const totalOperations = allOperations.reduce((sum, resource) => {
-				return sum + (resource.options as Array<any>).length;
+				return sum + (resource.options as Array<{ name: string; value: string }>).length;
 			}, 0);
 
 			// Plus post (6), account (6), ai (15) = 27 more
